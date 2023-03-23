@@ -1,0 +1,62 @@
+#body {
+    align-content: center;
+    margin:0;
+    padding:0;
+    text-align: center;
+}
+
+#header {
+    background: linear-gradient(#00000070,#ffffff);
+    height: 4rem;
+    width:95vw;
+    margin:0px;
+    padding:0px;
+    text-align: center;
+}
+
+#footer {
+    background: linear-gradient(#ffffff,#00000070);
+    height: 4rem;
+    width:95vw;
+    margin:0px;
+    padding:0px;
+    text-align: center;
+}
+
+#gameRow {
+    height: 45vw;
+    width: 95vw;
+    display:flex;
+    margin:0px;
+    padding:0px;
+    align-content: space-between;
+    text-align: center;
+}
+
+#gameBoard {
+    width:45vw;
+    height:auto;
+    /*border-color:black;
+    border-style: solid;*/
+    margin:0px;
+    padding:0px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#gameSettings {
+    width:25vw;
+    border-color:black;
+    border-style: solid;
+    background: linear-gradient(to right,#00000070,#ffffff);
+    margin:0px;
+    padding:0px;
+}
+#gameControls {
+    width:25vw;
+    border-color:black;
+    border-style: solid;
+    background: linear-gradient(to right,#ffffff,#00000070);
+    margin:0px;
+    padding:0px;
+}
