@@ -41,89 +41,89 @@ let whitePieces = [
     {
         icon: "./assets/whitePawn.png",
         initialSpot:"A2",
-        currentSpot:"A2"
+        pieceType: "pawn"
     },
     {
         icon: "./assets/whitePawn.png",
         initialSpot:"B2",
-        currentSpot:"B2"
+        pieceType: "pawn"
     },
     {
         icon: "./assets/whitePawn.png",
         initialSpot:"C2",
-        currentSpot:"C2"
+        pieceType: "pawn"
     },
     {
         icon: "./assets/whitePawn.png",
         initialSpot:"D2",
-        currentSpot:"D2"
+        pieceType: "pawn"
     },
     {
         icon: "./assets/whitePawn.png",
         initialSpot:"E2",
-        currentSpot:"E2"
+        pieceType: "pawn"
     },
     {
         icon: "./assets/whitePawn.png",
         initialSpot:"F2",
-        currentSpot:"F2"
+        pieceType: "pawn"
     },
     {
         icon: "./assets/whitePawn.png",
         initialSpot:"G2",
-        currentSpot:"G2"
+        pieceType: "pawn"
     },
     {
         icon: "./assets/whitePawn.png",
         initialSpot:"H2",
-        currentSpot:"H2"
+        pieceType: "pawn"
     },
     {
         icon: "./assets/whiteRook.png",
         initialSpot:"A1",
-        currentSpot:"A1"
+        pieceType: "rook"
     }
     ,
     {
         icon: "./assets/whiteKnight.png",
         initialSpot:"B1",
-        currentSpot:"B1"
+        pieceType: "knight"
     }
     ,
     {
         icon: "./assets/whiteBishop.png",
         initialSpot:"C1",
-        currentSpot:"C1"
+        pieceType: "bishop"
     }
     ,
     {
         icon: "./assets/whiteQueen.png",
         initialSpot:"D1",
-        currentSpot:"D1"
+        pieceType: "queen"
     }
     ,
     {
         icon: "./assets/whiteKing.png",
         initialSpot:"E1",
-        currentSpot:"E1"
+        pieceType: "king"
     }
     ,
     {
         icon: "./assets/whiteBishop.png",
         initialSpot:"F1",
-        currentSpot:"F1"
+        pieceType: "bishop"
     }
     ,
     {
         icon: "./assets/whiteKnight.png",
         initialSpot:"G1",
-        currentSpot:"G1"
+        pieceType: "knight"
     }
     ,
     {
         icon: "./assets/whiteRook.png",
         initialSpot:"H1",
-        currentSpot:"H1"
+        pieceType: "rook"
     }
 ]
 
@@ -132,110 +132,111 @@ let blackPieces = [
     {
         icon: "./assets/blackPawn.png",
         initialSpot:"A7",
-        currentSpot:"A7"
+        pieceType: "pawn"
     },
     {
         icon: "./assets/blackPawn.png",
         initialSpot:"B7",
-        currentSpot:"B7"
+        pieceType: "pawn"
     },
     {
         icon: "./assets/blackPawn.png",
         initialSpot:"C7",
-        currentSpot:"C7"
+        pieceType: "pawn"
     },
     {
         icon: "./assets/blackPawn.png",
         initialSpot:"D7",
-        currentSpot:"D7"
+        pieceType: "pawn"
     },
     {
         icon: "./assets/blackPawn.png",
         initialSpot:"E7",
-        currentSpot:"E7"
+        pieceType: "pawn"
     },
     {
         icon: "./assets/blackPawn.png",
         initialSpot:"F7",
-        currentSpot:"F7"
+        pieceType: "pawn"
     },
     {
         icon: "./assets/blackPawn.png",
         initialSpot:"G7",
-        currentSpot:"G7"
+        pieceType: "pawn"
     },
     {
         icon: "./assets/blackPawn.png",
         initialSpot:"H7",
-        currentSpot:"H7"
+        pieceType: "pawn"
     },
     {
         icon: "./assets/blackRook.png",
         initialSpot:"A8",
-        currentSpot:"A8"
+        pieceType: "rook"
     }
     ,
     {
         icon: "./assets/blackKnight.png",
         initialSpot:"B8",
-        currentSpot:"B8"
+        pieceType: "knight"
     }
     ,
     {
         icon: "./assets/blackBishop.png",
         initialSpot:"C8",
-        currentSpot:"C8"
+        pieceType: "bishop"
     }
     ,
     {
         icon: "./assets/blackQueen.png",
         initialSpot:"D8",
-        currentSpot:"D8"
+        pieceType: "queen"
     }
     ,
     {
         icon: "./assets/blackKing.png",
         initialSpot:"E8",
-        currentSpot:"E8"
+        pieceType: "king"
     }
     ,
     {
         icon: "./assets/blackBishop.png",
         initialSpot:"F8",
-        currentSpot:"F8"
+        pieceType: "bishop"
     }
     ,
     {
         icon: "./assets/blackKnight.png",
         initialSpot:"G8",
-        currentSpot:"G8"
+        pieceType: "knight"
     }
     ,
     {
         icon: "./assets/blackRook.png",
         initialSpot:"H8",
-        currentSpot:"H8"
+        pieceType: "rook"
     }
 ]
 
 
 
 function resetBoard () {
-    whitePieces.forEach((piece) => {
+    function resetPieces (piece) {
         let pieceObject = document.createElement("img")
         pieceObject.src = piece.icon
         pieceObject.style.height = "5.625vw"
         pieceObject.style.width = "5.625vw"
         let location = document.querySelector(`#${piece.initialSpot}`)
         location.append(pieceObject)
+        piece.currentSpot = piece.initialSpot
+        piece.moveCount = 0
+    }
+
+    whitePieces.forEach((piece) => {
+        resetPieces(piece)
         })
     blackPieces.forEach((piece) => {
-        let pieceObject = document.createElement("img")
-        pieceObject.src = piece.icon
-        pieceObject.style.height = "5.625vw"
-        pieceObject.style.width = "5.625vw"
-        let location = document.querySelector(`#${piece.initialSpot}`)
-        location.append(pieceObject)
+        resetPieces(piece)
         })
 }
 
