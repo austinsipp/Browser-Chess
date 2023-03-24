@@ -7,6 +7,22 @@ function squareIdMap (id) {
     return column + row
 }
 
+function squareNameToCoords (squareName) {
+    let y = parseInt(squareName.substring(1,2))
+    let xLetter = squareName.substring(0,1)
+    let columnTransform = ["A","B","C","D","E","F","G","H"]
+    let x = columnTransform.indexOf(xLetter) + 1
+    return [x,y]
+}
+//console.log(squareNameToCoords ("A2"))
+
+function squareCoordsToName (squareCoords) {
+    let row = squareCoords[1]
+    let columnTransform = ["A","B","C","D","E","F","G","H"]
+    let column = columnTransform[squareCoords[0]-1]
+    return column + row
+}
+
 for (let i=1; i<=8; i++) {
     let row = document.createElement("div")
     row.style.display = "flex"
@@ -218,6 +234,36 @@ let blackPieces = [
     }
 ]
 
+let allPieces = {white: whitePieces, black: blackPieces}
+//console.log(allPieces.white)
+let gameData = {turn: "white", boardPosition: allPieces}
+
+let squaresObject = []
+
+/*
+for (let column=1; column<=8; column++) {
+    squaresObject.push([])
+    for (let row=1; row<=8; row++) {
+        squaresObject[column-1].push([])
+        squaresObject[column-1][row-1].push(
+            {
+                squareName: squareCoordsToName([row,column]),
+                squareCoords: [row,column],
+                occupied: "unoccupied"
+            })
+    }
+}
+console.log(squaresObject)*/
+
+
+function mapPiecesToSquaresObject() {
+    allPieces.white.forEach((piece) => {
+        squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].occupied = 'white'
+    })
+    allPieces.black.forEach((piece) => {
+        squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].occupied = 'black'
+    })
+}
 
 
 function resetBoard () {
@@ -230,15 +276,39 @@ function resetBoard () {
         location.append(pieceObject)
         piece.currentSpot = piece.initialSpot
         piece.moveCount = 0
+        piece.currentCoord = squareNameToCoords(piece.currentSpot)
+        piece.captured = false
     }
 
     whitePieces.forEach((piece) => {
         resetPieces(piece)
+        piece.color = "white"
         })
     blackPieces.forEach((piece) => {
         resetPieces(piece)
+        piece.color = "black"
         })
+    for (let column=1; column<=8; column++) {
+        squaresObject.push([])
+        for (let row=1; row<=8; row++) {
+            squaresObject[column-1].push([])
+            squaresObject[column-1][row-1].push(
+                {
+                    squareName: squareCoordsToName([row,column]),
+                    squareCoords: [row,column],
+                    occupied: "unoccupied"
+                })
+        }
+    }
+    mapPiecesToSquaresObject()
 }
 
 resetBoard()
+console.log(squaresObject)
+
+function checkValidMoves(piece) {
+
+}
+
+
 
