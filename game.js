@@ -407,10 +407,17 @@ function checkValidMoves(piece) {
 function populateValidMoves (gameData) {
     if (gameData.turn === "white") {
         gameData.boardPosition.white.forEach((piece) => {
-            let validMovesArray = checkValidMoves(piece)
             let pieceObject = document.querySelector(`#${piece.pieceId}`)
             pieceObject.addEventListener('click', () => {
+                let validMovesArray = checkValidMoves(piece)
+                console.log("did I make it?")
+                console.log(validMovesArray)
                 document.querySelector(`#${piece.currentSpot}`).style.backgroundColor = "green"
+                console.log("made it here")
+                validMovesArray.forEach((validMoveSquare) => {
+                    console.log(validMoveSquare)
+                    document.querySelector(`#${validMoveSquare}`).style.backgroundColor = "yellow"
+                })
             })
             //validMovesArray.forEach()
             //let validSquare = document.querySelector.
