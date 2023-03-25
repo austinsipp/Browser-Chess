@@ -6,104 +6,104 @@ let whitePieces = [
         icon: "./assets/whitePawn.png",
         initialSpot:"A2",
         pieceType: "pawn",
-        pieceId: "queensRookPawn"
+        pieceId: "queensRookPawnWhite"
     },
     {
         icon: "./assets/whitePawn.png",
         initialSpot:"B2",
         pieceType: "pawn",
-        pieceId: "queensKnightPawn"
+        pieceId: "queensKnightPawnWhite"
     },
     {
         icon: "./assets/whitePawn.png",
         initialSpot:"C2",
         pieceType: "pawn",
-        pieceId: "queensBishopPawn"
+        pieceId: "queensBishopPawnWhite"
     },
     {
         icon: "./assets/whitePawn.png",
         initialSpot:"D2",
         pieceType: "pawn",
-        pieceId: "queensPawn"
+        pieceId: "queensPawnWhite"
     },
     {
         icon: "./assets/whitePawn.png",
         initialSpot:"E2",
         pieceType: "pawn",
-        pieceId: "kingsPawn"
+        pieceId: "kingsPawnWhite"
     },
     {
         icon: "./assets/whitePawn.png",
         initialSpot:"F2",
         pieceType: "pawn",
-        pieceId: "kingsBishopPawn"
+        pieceId: "kingsBishopPawnWhite"
     },
     {
         icon: "./assets/whitePawn.png",
         initialSpot:"G2",
         pieceType: "pawn",
-        pieceId: "kingsKnightPawn"
+        pieceId: "kingsKnightPawnWhite"
     },
     {
         icon: "./assets/whitePawn.png",
         initialSpot:"H2",
         pieceType: "pawn",
-        pieceId: "kingsRookPawn"
+        pieceId: "kingsRookPawnWhite"
     },
     {
         icon: "./assets/whiteRook.png",
         initialSpot:"A1",
         pieceType: "rook",
-        pieceId: "queensRook"
+        pieceId: "queensRookWhite"
     }
     ,
     {
         icon: "./assets/whiteKnight.png",
         initialSpot:"B1",
         pieceType: "knight",
-        pieceId: "queensKnight"
+        pieceId: "queensKnightWhite"
     }
     ,
     {
         icon: "./assets/whiteBishop.png",
         initialSpot:"C1",
         pieceType: "bishop",
-        pieceId: "queensBishop"
+        pieceId: "queensBishopWhite"
     }
     ,
     {
         icon: "./assets/whiteQueen.png",
         initialSpot:"D1",
         pieceType: "queen",
-        pieceId: "queen"
+        pieceId: "queenWhite"
     }
     ,
     {
         icon: "./assets/whiteKing.png",
         initialSpot:"E1",
         pieceType: "king",
-        pieceId: "king"
+        pieceId: "kingWhite"
     }
     ,
     {
         icon: "./assets/whiteBishop.png",
         initialSpot:"F1",
         pieceType: "bishop",
-        pieceId: "kingsBishop"
+        pieceId: "kingsBishopWhite"
     }
     ,
     {
         icon: "./assets/whiteKnight.png",
         initialSpot:"G1",
         pieceType: "knight",
-        pieceId: "kingsKnight"
+        pieceId: "kingsKnightWhite"
     }
     ,
     {
         icon: "./assets/whiteRook.png",
         initialSpot:"H1",
         pieceType: "rook",
-        pieceId: "kingsRook"
+        pieceId: "kingsRookWhite"
     }
 ]
 
@@ -112,89 +112,105 @@ let blackPieces = [
     {
         icon: "./assets/blackPawn.png",
         initialSpot:"A7",
-        pieceType: "pawn"
+        pieceType: "pawn",
+        pieceId: "queensRookPawnBlack"
     },
     {
         icon: "./assets/blackPawn.png",
         initialSpot:"B7",
-        pieceType: "pawn"
+        pieceType: "pawn",
+        pieceId: "queensKnightPawnBlack"
     },
     {
         icon: "./assets/blackPawn.png",
         initialSpot:"C7",
-        pieceType: "pawn"
+        pieceType: "pawn",
+        pieceId: "queensBishopPawnBlack"
     },
     {
         icon: "./assets/blackPawn.png",
         initialSpot:"D7",
-        pieceType: "pawn"
+        pieceType: "pawn",
+        pieceId: "queensPawnBlack"
     },
     {
         icon: "./assets/blackPawn.png",
         initialSpot:"E7",
-        pieceType: "pawn"
+        pieceType: "pawn",
+        pieceId: "kingsPawnBlack"
     },
     {
         icon: "./assets/blackPawn.png",
         initialSpot:"F7",
-        pieceType: "pawn"
+        pieceType: "pawn",
+        pieceId: "kingsBishopPawnBlack"
     },
     {
         icon: "./assets/blackPawn.png",
         initialSpot:"G7",
-        pieceType: "pawn"
+        pieceType: "pawn",
+        pieceId: "kingsKnightPawnBlack"
     },
     {
         icon: "./assets/blackPawn.png",
         initialSpot:"H7",
-        pieceType: "pawn"
+        pieceType: "pawn",
+        pieceId: "kingsRookPawnBlack"
     },
     {
         icon: "./assets/blackRook.png",
         initialSpot:"A8",
-        pieceType: "rook"
+        pieceType: "rook",
+        pieceId: "queensRookBlack"
     }
     ,
     {
         icon: "./assets/blackKnight.png",
         initialSpot:"B8",
-        pieceType: "knight"
+        pieceType: "knight",
+        pieceId: "queensKnightBlack"
     }
     ,
     {
         icon: "./assets/blackBishop.png",
         initialSpot:"C8",
-        pieceType: "bishop"
+        pieceType: "bishop",
+        pieceId: "queensBishopBlack"
     }
     ,
     {
         icon: "./assets/blackQueen.png",
         initialSpot:"D8",
-        pieceType: "queen"
+        pieceType: "queen",
+        pieceId: "queenBlack"
     }
     ,
     {
         icon: "./assets/blackKing.png",
         initialSpot:"E8",
-        pieceType: "king"
+        pieceType: "king",
+        pieceId: "kingBlack"
     }
     ,
     {
         icon: "./assets/blackBishop.png",
         initialSpot:"F8",
-        pieceType: "bishop"
+        pieceType: "bishop",
+        pieceId: "kingsBishopBlack"
     }
     ,
     {
         icon: "./assets/blackKnight.png",
         initialSpot:"G8",
-        pieceType: "knight"
+        pieceType: "knight",
+        pieceId: "kingsKnightBlack"
     }
     ,
     {
         icon: "./assets/blackRook.png",
         initialSpot:"H8",
-        pieceType: "rook"
+        pieceType: "rook",
+        pieceId: "kingsRookBlack"
     }
 ]
 
@@ -229,6 +245,23 @@ function squareCoordsToName (squareCoords) {
     return returnValue
 }
 
+function recolorBoard() {
+    for (let i=1; i<=8; i++) {
+        for (let j=1; j<=8; j++) {
+            let square = document.querySelector(`#${squareIdMap([i,j])}`)
+            if (i%2 === 0 && j%2 === 0) {
+                square.style.backgroundColor = "white"
+            } else if (i%2 != 0 && j%2 === 0) {
+                square.style.backgroundColor = "#00000050"
+            } else if (i%2 === 0 && j%2 != 0) {
+                square.style.backgroundColor = "#00000050"
+            } else if (i%2 != 0 && j%2 != 0){
+                square.style.backgroundColor = "white"
+            }
+        }
+    }
+}
+
 for (let i=1; i<=8; i++) {
     let row = document.createElement("div")
     row.style.display = "flex"
@@ -245,19 +278,10 @@ for (let i=1; i<=8; i++) {
         square.style.textAlign = "center"
         square.id = squareIdMap([i,j])
         row.append(square)
-        if (i%2 === 0 && j%2 === 0) {
-            square.style.backgroundColor = "white"
-        } else if (i%2 != 0 && j%2 === 0) {
-            square.style.backgroundColor = "#00000050"
-        } else if (i%2 === 0 && j%2 != 0) {
-            square.style.backgroundColor = "#00000050"
-        } else if (i%2 != 0 && j%2 != 0){
-            square.style.backgroundColor = "white"
-        }
     }
     gameBoard.append(row)
 }
-
+recolorBoard()
 
 
 
@@ -321,46 +345,68 @@ function resetBoard () {
 
 function checkValidMoves(piece) {
     let validMovesArray = []
-    switch(piece.pieceType) {
-        case ("pawn"):
-            let validMoveCounter = 0
-            //capturing
-            if (piece.color === "white") {
-                let newCoords = [piece.currentCoord[0] - 1, piece.currentCoord[1] + 1]
-                if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                    squaresObject[newCoords[0]-1][newCoords[1]-1][0].occupied === "black") {
-                    validMovesArray.push(squareCoordsToName(newCoords))
-                    validMoveCounter++
+    if (gameData.turn === piece.color) {
+        switch(piece.pieceType) {
+            case ("pawn"):
+                let validMoveCounter = 0
+                //capturing
+                if (piece.color === "white") {
+                    let newCoords = [piece.currentCoord[0] - 1, piece.currentCoord[1] + 1]
+                    if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                        squaresObject[newCoords[0]-1][newCoords[1]-1][0].occupied === "black") {
+                        validMovesArray.push(squareCoordsToName(newCoords))
+                        validMoveCounter++
+                    }
+                    newCoords = [piece.currentCoord[0] + 1, piece.currentCoord[1] + 1]
+                    if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                        squaresObject[newCoords[0]-1][newCoords[1]-1][0].occupied === "black") {
+                        validMovesArray.push(squareCoordsToName(newCoords))
+                        validMoveCounter++
+                    }
                 }
-                newCoords = [piece.currentCoord[0] + 1, piece.currentCoord[1] + 1]
-                if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                    squaresObject[newCoords[0]-1][newCoords[1]-1][0].occupied === "black") {
-                    validMovesArray.push(squareCoordsToName(newCoords))
-                    validMoveCounter++
+                if (piece.color === "black") {
+                    let newCoords = [piece.currentCoord[0] - 1, piece.currentCoord[1] - 1]
+                    console.log("checking",newCoords)
+                    if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                        squaresObject[newCoords[0]-1][newCoords[1]-1][0].occupied === "white") {
+                        validMovesArray.push(squareCoordsToName(newCoords))
+                        validMoveCounter++
+                    }
+                    newCoords = [piece.currentCoord[0] + 1, piece.currentCoord[1] - 1]
+                    console.log("checking",newCoords)
+                    if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                        squaresObject[newCoords[0]-1][newCoords[1]-1][0].occupied === "white") {
+                        validMovesArray.push(squareCoordsToName(newCoords))
+                        validMoveCounter++
+                    }
                 }
-            }
-            if (piece.color === "black") {
-                let newCoords = [piece.currentCoord[0] - 1, piece.currentCoord[1] - 1]
-                if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                    squaresObject[newCoords[0]-1][newCoords[1]-1][0].occupied === "white") {
-                    validMovesArray.push(squareCoordsToName(newCoords))
-                    validMoveCounter++
+                //first move option to move one or two
+                if (piece.moveCount === 0) {
+                    for(let squaresMoved = 1; squaresMoved <= 2; squaresMoved++) {
+                        let newCoords = []
+                        if (piece.color === "white") {
+                            newCoords = [piece.currentCoord[0], piece.currentCoord[1] + squaresMoved]
+                            console.log("checking",newCoords)
+                        } else if (piece.color === "black") {
+                            newCoords = [piece.currentCoord[0], piece.currentCoord[1] - squaresMoved]
+                            console.log("checking",newCoords)
+                        }
+                        if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                            squaresObject[newCoords[0]-1][newCoords[1]-1][0].occupied === "unoccupied") {
+                            validMovesArray.push(squareCoordsToName(newCoords))
+                            validMoveCounter++
+                        }
+                    }
                 }
-                newCoords = [piece.currentCoord[0] + 1, piece.currentCoord[1] - 1]
-                if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                    squaresObject[newCoords[0]-1][newCoords[1]-1][0].occupied === "white") {
-                    validMovesArray.push(squareCoordsToName(newCoords))
-                    validMoveCounter++
-                }
-            }
-            //first move option to move one or two
-            if (piece.moveCount === 0) {
-                for(let squaresMoved = 1; squaresMoved <= 2; squaresMoved++) {
+                //subsequent moves only 1 forward
+                if (piece.moveCount != 0) {
                     let newCoords = []
                     if (piece.color === "white") {
-                        newCoords = [piece.currentCoord[0], piece.currentCoord[1] + squaresMoved]
+                        newCoords = [piece.currentCoord[0], piece.currentCoord[1] + 1]
+                        console.log("checking",newCoords)
                     } else if (piece.color === "black") {
-                        newCoords = [piece.currentCoord[0], piece.currentCoord[1] - squaresMoved]
+                        newCoords = [piece.currentCoord[0], piece.currentCoord[1] - 1]
+                        console.log("checking",newCoords)
                     }
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
                         squaresObject[newCoords[0]-1][newCoords[1]-1][0].occupied === "unoccupied") {
@@ -368,39 +414,65 @@ function checkValidMoves(piece) {
                         validMoveCounter++
                     }
                 }
-            }
-            //subsequent moves only 1 forward
-            if (piece.moveCount != 0) {
-                let newCoords = []
-                if (piece.color === "white") {
-                    newCoords = [piece.currentCoord[0], piece.currentCoord[1] + squaresMoved]
-                } else if (piece.color === "black") {
-                    newCoords = [piece.currentCoord[0], piece.currentCoord[1] - squaresMoved]
-                }
-                if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                    squaresObject[newCoords[0]-1][newCoords[1]-1][0].occupied === "unoccupied") {
-                    validMovesArray.push(squareCoordsToName(newCoords))
-                    validMoveCounter++
-                }
-            }
-        break
-        case ("knight"):
-
-        break
-        case ("bishop"):
-
-        break
-        case ("rook"):
-
-        break
-        case ("queen"):
-
-        break
-        case ("king"):
-
-        break
+            break
+            case ("knight"):
+    
+            break
+            case ("bishop"):
+    
+            break
+            case ("rook"):
+    
+            break
+            case ("queen"):
+    
+            break
+            case ("king"):
+    
+            break
+        }
     }
+    
     return validMovesArray
+}
+
+function switchTurns(currentMoverColor) {
+    if (currentMoverColor === "white") {
+        gameData.turn = "black"
+    }
+    else if (currentMoverColor === "black") {
+        gameData.turn = "white"
+    }
+    console.log(gameData.turn,"to move")
+}
+
+function movePiece(piece, pieceObject, endingSquare, event) {
+    event.currentTarget.append(pieceObject)
+    piece.currentSpot = endingSquare
+    piece.currentCoord = squareNameToCoords(endingSquare)
+    piece.moveCount++
+    //console.log(`running switchTurns(${gameData.turn})`)
+    switchTurns(gameData.turn)
+    //console.log(gameData)
+    recolorBoard()
+    populateValidMoves(gameData)
+}
+
+function displayValidMoves (piece, pieceObject ) {
+    let validMovesArray = checkValidMoves(piece)
+    console.log(validMovesArray)
+    if(validMovesArray.length >= 1){
+        document.querySelector(`#${piece.currentSpot}`).style.backgroundColor = "green"
+        validMovesArray.forEach((validMoveSquare) => {
+            document.querySelector(`#${validMoveSquare}`).style.backgroundColor = "yellow"
+            document.querySelector(`#${validMoveSquare}`).addEventListener('click', function squareEventListener(e)  {
+                movePiece(piece, pieceObject, validMoveSquare, e)
+                pieceObject.removeEventListener('click', function pieceEventListener() {
+                    displayValidMoves(piece, pieceObject)
+                })
+            })
+        })
+    }
 }
 
 
@@ -408,42 +480,21 @@ function populateValidMoves (gameData) {
     if (gameData.turn === "white") {
         gameData.boardPosition.white.forEach((piece) => {
             let pieceObject = document.querySelector(`#${piece.pieceId}`)
-            pieceObject.addEventListener('click', () => {
-                let validMovesArray = checkValidMoves(piece)
-                console.log("did I make it?")
-                console.log(validMovesArray)
-                document.querySelector(`#${piece.currentSpot}`).style.backgroundColor = "green"
-                console.log("made it here")
-                validMovesArray.forEach((validMoveSquare) => {
-                    console.log(validMoveSquare)
-                    document.querySelector(`#${validMoveSquare}`).style.backgroundColor = "yellow"
-                })
+            pieceObject.addEventListener('click', function pieceEventListener() {
+                displayValidMoves(piece, pieceObject)
             })
-            //validMovesArray.forEach()
-            //let validSquare = document.querySelector.
-        }
-        )
+        })
     } 
     else if (gameData.turn === "black") {
         gameData.boardPosition.black.forEach((piece) => {
             let pieceObject = document.querySelector(`#${piece.pieceId}`)
-            pieceObject.addEventListener('click', () => {
-                let validMovesArray = checkValidMoves(piece)
-                console.log("did I make it?")
-                console.log(validMovesArray)
-                document.querySelector(`#${piece.currentSpot}`).style.backgroundColor = "green"
-                console.log("made it here")
-                validMovesArray.forEach((validMoveSquare) => {
-                    console.log($validMoveSquare)
-                    document.querySelector(`#${validMoveSquare}`).style.backgroundColor = "yellow"
-                })
+            pieceObject.addEventListener('click', function pieceEventListener() {
+                displayValidMoves(piece, pieceObject)
             })
-            //validMovesArray.forEach()
-            //let validSquare = document.querySelector.
-        }
-        )
+        })
     }
 }
+
 
 
 
