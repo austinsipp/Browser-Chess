@@ -1,4 +1,6 @@
 let gameBoard = document.querySelector("#gameBoard")
+let whiteCaptured = document.querySelector("#whiteCaptured")
+let blackCaptured = document.querySelector("#blackCaptured")
 
 
 let whitePieces = [
@@ -215,6 +217,20 @@ let blackPieces = [
 ]
 
 
+let allPieces = {white: whitePieces, black: blackPieces}
+
+let currentSelectedPiece = {piece:null, pieceObject:null, validMovesArray:[]}
+
+
+
+let gameData = {turn: "white", moveCounter: 0, boardPosition: allPieces}
+
+let squaresObject = []
+
+function resetCurrentPiece () {
+    currentSelectedPiece = {piece:null, pieceObject:null, validMovesArray:[]}
+}
+
 
 function squareIdMap (id) {
     let row = 9 - id[0]
@@ -258,6 +274,15 @@ function recolorBoard() {
             } else if (i%2 != 0 && j%2 != 0){
                 square.style.backgroundColor = "white"
             }
+            /*if(typeof square.onclick == "function") {
+                square.removeEventListener('click', 'click', function squareEventListener(e)  {
+                    movePiece(piece, pieceObject, validMoveSquare, e)
+                    pieceObject.removeEventListener('click', function pieceEventListener() {
+                        displayValidMoves(piece, pieceObject)
+                    })
+                })
+             }*/
+            
         }
     }
 }
@@ -277,6 +302,7 @@ for (let i=1; i<=8; i++) {
         square.style.outlineOffset = "-1px"
         square.style.textAlign = "center"
         square.id = squareIdMap([i,j])
+        square.addEventListener('click', onSquareClick)
         row.append(square)
     }
     gameBoard.append(row)
@@ -285,19 +311,20 @@ recolorBoard()
 
 
 
-let allPieces = {white: whitePieces, black: blackPieces}
 
-let gameData = {turn: "white", boardPosition: allPieces}
 
-let squaresObject = []
+
+
 
 
 function mapPiecesToSquaresObject() {
     allPieces.white.forEach((piece) => {
         squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].occupied = 'white'
+        squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].pieceOccupyingSquare = piece.pieceId
     })
     allPieces.black.forEach((piece) => {
         squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].occupied = 'black'
+        squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].pieceOccupyingSquare = piece.pieceId
     })
 }
 
@@ -443,56 +470,97 @@ function switchTurns(currentMoverColor) {
     else if (currentMoverColor === "black") {
         gameData.turn = "white"
     }
+
     console.log(gameData.turn,"to move")
 }
 
-function movePiece(piece, pieceObject, endingSquare, event) {
-    event.currentTarget.append(pieceObject)
-    piece.currentSpot = endingSquare
-    piece.currentCoord = squareNameToCoords(endingSquare)
+function movePiece(piece, pieceObject, endingSquare) {
+    
+    
+    let oldSpot = squareNameToCoords(piece.currentSpot)
+    squaresObject[oldSpot[0]-1][oldSpot[1]-1][0].occupied = 'unoccupied'
+    piece.currentSpot = endingSquare.id
+    piece.currentCoord = squareNameToCoords(endingSquare.id)
     piece.moveCount++
+    gameData.moveCounter++
+    //capturing
+    console.log(squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1][0])
+    if (squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1][0].occupied != 'unoccupied') {
+        let endingSquarePiece = document.querySelector(`#${squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1][0].pieceOccupyingSquare}`)
+        if (piece.color === "white") {
+            blackCaptured.append(endingSquarePiece)
+        } else if (piece.color === "black") {
+            whiteCaptured.append(endingSquarePiece)
+        }
+        //endingSquarePiece.remove()
+    }
+    endingSquare.append(pieceObject)
+
     //console.log(`running switchTurns(${gameData.turn})`)
+    squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1][0].occupied = piece.color
+    squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1][0].pieceOccupyingSquare = piece.pieceId
+    recolorBoard()
     switchTurns(gameData.turn)
     //console.log(gameData)
-    recolorBoard()
-    populateValidMoves(gameData)
+    resetCurrentPiece()
+    //populateValidMoves(gameData)
+    //return "moveComplete"
 }
 
 function displayValidMoves (piece, pieceObject ) {
+    console.log(piece.color)
     let validMovesArray = checkValidMoves(piece)
+    currentSelectedPiece = {piece,pieceObject, validMovesArray}
     console.log(validMovesArray)
+    console.log(currentSelectedPiece)
     if(validMovesArray.length >= 1){
         document.querySelector(`#${piece.currentSpot}`).style.backgroundColor = "green"
         validMovesArray.forEach((validMoveSquare) => {
             document.querySelector(`#${validMoveSquare}`).style.backgroundColor = "yellow"
-            document.querySelector(`#${validMoveSquare}`).addEventListener('click', function squareEventListener(e)  {
-                movePiece(piece, pieceObject, validMoveSquare, e)
-                pieceObject.removeEventListener('click', function pieceEventListener() {
-                    displayValidMoves(piece, pieceObject)
-                })
-            })
         })
     }
 }
 
 
-function populateValidMoves (gameData) {
-    if (gameData.turn === "white") {
-        gameData.boardPosition.white.forEach((piece) => {
-            let pieceObject = document.querySelector(`#${piece.pieceId}`)
-            pieceObject.addEventListener('click', function pieceEventListener() {
-                displayValidMoves(piece, pieceObject)
-            })
+function onGamePieceSelect(event) {
+    if(currentSelectedPiece.piece === null) {
+        event.stopPropagation()
+        recolorBoard()
+        let eventTarget = event.currentTarget
+        //console.log(eventTarget)
+        let eventTargetId = eventTarget.id
+        let pieces = gameData.turn === "white" ? gameData.boardPosition.white : gameData.boardPosition.black
+        pieces.forEach((piece) => {
+            if(eventTargetId === piece.pieceId) {
+                displayValidMoves(piece,eventTarget)
+            }
         })
-    } 
-    else if (gameData.turn === "black") {
-        gameData.boardPosition.black.forEach((piece) => {
-            let pieceObject = document.querySelector(`#${piece.pieceId}`)
-            pieceObject.addEventListener('click', function pieceEventListener() {
-                displayValidMoves(piece, pieceObject)
-            })
-        })
+    }  
+    
+}
+
+function onSquareClick (event) {
+    let square = event.currentTarget
+    let {piece,pieceObject,validMovesArray} = currentSelectedPiece || {}
+    let squareId = square.id
+    if(piece && pieceObject && validMovesArray.length > 0 && validMovesArray.indexOf(squareId) != -1) {
+        movePiece(piece, pieceObject, square)
     }
+}
+
+
+
+
+
+
+
+function populateValidMoves (gameData) {
+    let pieces = [...gameData.boardPosition.white,...gameData.boardPosition.black]
+    pieces.forEach((piece) => {
+        let pieceObject = document.querySelector(`#${piece.pieceId}`)
+        pieceObject.setAttribute('listener','true')
+        pieceObject.addEventListener('click', onGamePieceSelect)
+    })
 }
 
 
@@ -503,12 +571,26 @@ function populateValidMoves (gameData) {
 
 
 resetBoard()
+populateValidMoves(gameData)
 //console.log(squaresObject)
 //console.log(whitePieces)
 
 //console.log(whitePieces[2])
 //console.log(checkValidMoves(whitePieces[2]))
+/*function playGame() {
+    for (let i = 0; i<=10; i++) {
+        if (gameData.moveCounter === i) {
+             populateValidMoves(gameData)
+        }
+    }
+}*/
+/*
+function playGame() {
+    while (true) {
+        populateValidMoves
+    }
+}*/
 
-populateValidMoves(gameData)
+//playGame()
 
 

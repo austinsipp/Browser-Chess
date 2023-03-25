@@ -23,6 +23,25 @@
     text-align: center;
 }
 
+
+#whiteCaptured {
+    background: white;
+    height: 5rem;
+    width:95vw;
+    margin:0px;
+    padding:0px;
+    text-align: center;
+}
+
+#blackCaptured {
+    background: white;
+    height: 5rem;
+    width:95vw;
+    margin:0px;
+    padding:0px;
+    text-align: center;
+}
+
 #gameRow {
     height: 45vw;
     width: 95vw;
