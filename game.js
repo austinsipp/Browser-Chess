@@ -326,6 +326,7 @@ function mapPiecesToSquaresObject() {
         squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].occupied = 'black'
         squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].pieceOccupyingSquare = piece.pieceId
     })
+    console.log(squaresObject)
 }
 
 
@@ -357,13 +358,18 @@ function resetBoard () {
     for (let column=1; column<=8; column++) {
         squaresObject.push([])
         for (let row=1; row<=8; row++) {
-            squaresObject[column-1].push([])
+            /*squaresObject[column-1].push([])
             squaresObject[column-1][row-1].push(
                 {
-                    squareName: squareCoordsToName([row,column]),
-                    squareCoords: [row,column],
+                    squareName: squareCoordsToName([column,row]),
+                    squareCoords: [column,row],
                     occupied: "unoccupied"
-                })
+                })*/
+            squaresObject[column-1].push({
+                squareName: squareCoordsToName([column,row]),
+                squareCoords: [column,row],
+                occupied: "unoccupied"
+            })
         }
     }
     mapPiecesToSquaresObject()
@@ -375,53 +381,53 @@ function checkValidMoves(piece) {
     if (gameData.turn === piece.color) {
         switch(piece.pieceType) {
             case ("pawn"):
-                let validMoveCounter = 0
                 //capturing
                 if (piece.color === "white") {
                     let newCoords = [piece.currentCoord[0] - 1, piece.currentCoord[1] + 1]
+                    console.log("capture checking",newCoords, squaresObject[newCoords[0]-1][newCoords[1]-1].squareName)
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        squaresObject[newCoords[0]-1][newCoords[1]-1][0].occupied === "black") {
+                        squaresObject[newCoords[0]-1][newCoords[1]-1].occupied === "black") {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        validMoveCounter++
                     }
                     newCoords = [piece.currentCoord[0] + 1, piece.currentCoord[1] + 1]
+                    console.log("capture checking",newCoords, squaresObject[newCoords[0]-1][newCoords[1]-1].squareName)
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        squaresObject[newCoords[0]-1][newCoords[1]-1][0].occupied === "black") {
+                        squaresObject[newCoords[0]-1][newCoords[1]-1].occupied === "black") {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        validMoveCounter++
                     }
                 }
                 if (piece.color === "black") {
                     let newCoords = [piece.currentCoord[0] - 1, piece.currentCoord[1] - 1]
-                    console.log("checking",newCoords)
+                    console.log("capture checking",newCoords, squaresObject[newCoords[0]-1][newCoords[1]-1].squareName)
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        squaresObject[newCoords[0]-1][newCoords[1]-1][0].occupied === "white") {
+                        squaresObject[newCoords[0]-1][newCoords[1]-1].occupied === "white") {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        validMoveCounter++
                     }
                     newCoords = [piece.currentCoord[0] + 1, piece.currentCoord[1] - 1]
-                    console.log("checking",newCoords)
+                    console.log("capture checking",newCoords, squaresObject[newCoords[0]-1][newCoords[1]-1].squareName)
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        squaresObject[newCoords[0]-1][newCoords[1]-1][0].occupied === "white") {
+                        squaresObject[newCoords[0]-1][newCoords[1]-1].occupied === "white") {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        validMoveCounter++
                     }
                 }
                 //first move option to move one or two
                 if (piece.moveCount === 0) {
+                    let collision = false
                     for(let squaresMoved = 1; squaresMoved <= 2; squaresMoved++) {
                         let newCoords = []
                         if (piece.color === "white") {
                             newCoords = [piece.currentCoord[0], piece.currentCoord[1] + squaresMoved]
-                            console.log("checking",newCoords)
+                            console.log("first move checking",newCoords, squaresObject[newCoords[0]-1][newCoords[1]-1].squareName)
                         } else if (piece.color === "black") {
                             newCoords = [piece.currentCoord[0], piece.currentCoord[1] - squaresMoved]
-                            console.log("checking",newCoords)
+                            console.log("first move checking",newCoords, squaresObject[newCoords[0]-1][newCoords[1]-1].squareName)
                         }
-                        if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                            squaresObject[newCoords[0]-1][newCoords[1]-1][0].occupied === "unoccupied") {
+                        if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
+                            squaresObject[newCoords[0]-1][newCoords[1]-1].occupied === "unoccupied") {
                             validMovesArray.push(squareCoordsToName(newCoords))
-                            validMoveCounter++
+                        }
+                        if(squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied"){
+                            collision = true
                         }
                     }
                 }
@@ -430,15 +436,16 @@ function checkValidMoves(piece) {
                     let newCoords = []
                     if (piece.color === "white") {
                         newCoords = [piece.currentCoord[0], piece.currentCoord[1] + 1]
-                        console.log("checking",newCoords)
+                        console.log("checking",newCoords, squaresObject[newCoords[0]-1][newCoords[1]-1].squareName)
                     } else if (piece.color === "black") {
                         newCoords = [piece.currentCoord[0], piece.currentCoord[1] - 1]
-                        console.log("checking",newCoords)
+                        console.log("checking",newCoords, squaresObject[newCoords[0]-1][newCoords[1]-1].squareName)
                     }
+                    console.log(newCoords[0]-1,newCoords[1]-1)
+                    console.log("squaresObject[5][7]:",squaresObject[5][7])
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        squaresObject[newCoords[0]-1][newCoords[1]-1][0].occupied === "unoccupied") {
+                        squaresObject[newCoords[0]-1][newCoords[1]-1].occupied === "unoccupied") {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        validMoveCounter++
                     }
                 }
             break
@@ -478,15 +485,15 @@ function movePiece(piece, pieceObject, endingSquare) {
     
     
     let oldSpot = squareNameToCoords(piece.currentSpot)
-    squaresObject[oldSpot[0]-1][oldSpot[1]-1][0].occupied = 'unoccupied'
+    squaresObject[oldSpot[0]-1][oldSpot[1]-1].occupied = 'unoccupied'
     piece.currentSpot = endingSquare.id
     piece.currentCoord = squareNameToCoords(endingSquare.id)
     piece.moveCount++
     gameData.moveCounter++
     //capturing
-    console.log(squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1][0])
-    if (squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1][0].occupied != 'unoccupied') {
-        let endingSquarePiece = document.querySelector(`#${squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1][0].pieceOccupyingSquare}`)
+    console.log(squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1])
+    if (squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].occupied != 'unoccupied') {
+        let endingSquarePiece = document.querySelector(`#${squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].pieceOccupyingSquare}`)
         if (piece.color === "white") {
             blackCaptured.append(endingSquarePiece)
             gameData.boardPosition.black.forEach((blackPiece) => {
@@ -507,8 +514,8 @@ function movePiece(piece, pieceObject, endingSquare) {
     endingSquare.append(pieceObject)
 
     //console.log(`running switchTurns(${gameData.turn})`)
-    squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1][0].occupied = piece.color
-    squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1][0].pieceOccupyingSquare = piece.pieceId
+    squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].occupied = piece.color
+    squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].pieceOccupyingSquare = piece.pieceId
     recolorBoard()
     switchTurns(gameData.turn)
     console.log(gameData)
@@ -521,7 +528,7 @@ function displayValidMoves (piece, pieceObject ) {
     console.log(piece.color)
     let validMovesArray = checkValidMoves(piece)
     currentSelectedPiece = {piece,pieceObject, validMovesArray}
-    console.log(validMovesArray)
+    console.log("validMovesArray:",validMovesArray)
     console.log(currentSelectedPiece)
     if(validMovesArray.length >= 1){
         document.querySelector(`#${piece.currentSpot}`).style.backgroundColor = "green"
