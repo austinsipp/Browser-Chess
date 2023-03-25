@@ -489,8 +489,18 @@ function movePiece(piece, pieceObject, endingSquare) {
         let endingSquarePiece = document.querySelector(`#${squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1][0].pieceOccupyingSquare}`)
         if (piece.color === "white") {
             blackCaptured.append(endingSquarePiece)
+            gameData.boardPosition.black.forEach((blackPiece) => {
+                if (endingSquarePiece.id === blackPiece.pieceId) {
+                    blackPiece.captured = true
+                }
+            })
         } else if (piece.color === "black") {
             whiteCaptured.append(endingSquarePiece)
+            gameData.boardPosition.white.forEach((whitePiece) => {
+                if (endingSquarePiece.id === whitePiece.pieceId) {
+                    whitePiece.captured = true
+                }
+            })
         }
         //endingSquarePiece.remove()
     }
@@ -501,7 +511,7 @@ function movePiece(piece, pieceObject, endingSquare) {
     squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1][0].pieceOccupyingSquare = piece.pieceId
     recolorBoard()
     switchTurns(gameData.turn)
-    //console.log(gameData)
+    console.log(gameData)
     resetCurrentPiece()
     //populateValidMoves(gameData)
     //return "moveComplete"
