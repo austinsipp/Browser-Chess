@@ -318,7 +318,7 @@ function mapPiecesToSquaresObject() {
         squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].occupied = 'black'
         squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].pieceOccupyingSquare = piece.pieceId
     })
-    console.log(squaresObject)
+    //console.log(squaresObject)
 }
 
 
@@ -775,11 +775,9 @@ function checkMovesAnyPiece(piece) {
 
 function checkValidMovesForCheck(piece) {
     let newGameState = JSON.parse(JSON.stringify(gameData))
-    console.log(gameData,newGameState)
     let validMovesArray = []
     let possibleValidMovesArray = []
     possibleValidMovesArray = checkMovesAnyPiece(piece)
-    console.log(possibleValidMovesArray)
     possibleValidMovesArray.forEach((possibleValidMove) => {
         let newCoords = squareNameToCoords(possibleValidMove)
         if (piece.color === "white") {
@@ -851,6 +849,28 @@ function switchTurns(currentMoverColor) {
     console.log(gameData.turn,"to move")
 }
 
+function checkForCheckmate (gameState) {
+    let validMoveCount = 0
+    let victor = ''
+    if(gameState.turn === "white") {
+        gameState.boardPosition.white.forEach((piece) => {
+            let validMovesArray = checkValidMoves(piece)
+            validMoveCount +- validMovesArray.length
+            victor = "Black"
+        })
+    }
+    if(gameState.turn === "black") {
+        gameState.boardPosition.black.forEach((piece) => {
+            let validMovesArray = checkValidMoves(piece)
+            validMoveCount +- validMovesArray.length
+            victor = "White"
+        })
+    }
+    let check = checkForCheck(gameState)
+    if(check === true && validMoveCount === 0) {
+        console.log(`${victor} wins, congratulations!`)
+    }
+}
 
 
 function movePiece(piece, pieceObject, endingSquare) {
@@ -861,7 +881,6 @@ function movePiece(piece, pieceObject, endingSquare) {
     piece.moveCount++
     gameData.moveCounter++
     //capturing
-    console.log(gameData.squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1])
     if (gameData.squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].occupied != 'unoccupied') {
         let endingSquarePiece = document.querySelector(`#${gameData.squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].pieceOccupyingSquare}`)
         if (piece.color === "white") {
@@ -892,8 +911,8 @@ function movePiece(piece, pieceObject, endingSquare) {
     gameData.squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].pieceOccupyingSquare = piece.pieceId
     recolorBoard()
     switchTurns(gameData.turn)
-    console.log(gameData)
     resetCurrentPiece()
+    checkForCheckmate(gameData)
     //populateValidMoves(gameData)
     //return "moveComplete"
 }
@@ -901,8 +920,6 @@ function movePiece(piece, pieceObject, endingSquare) {
 function displayValidMoves (piece, pieceObject ) {
     let validMovesArray = checkValidMoves(piece)
     currentSelectedPiece = {piece,pieceObject, validMovesArray}
-    console.log("validMovesArray:",validMovesArray)
-    console.log(currentSelectedPiece)
     document.querySelector(`#${piece.currentSpot}`).style.backgroundColor = "green"
     if(validMovesArray.length >= 1){
         validMovesArray.forEach((validMoveSquare) => {
@@ -956,6 +973,8 @@ function populateValidMoves (gameData) {
         pieceObject.addEventListener('click', onGamePieceSelect)
     })
 }
+
+
 
 
 
