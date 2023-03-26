@@ -510,9 +510,10 @@ function checkMovesAnyPiece(piece) {
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
                         gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        if(gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied"){
-                            collision = true
-                        }
+                    }
+                    if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        collision = true
                     } 
                 }
                 //Northeast
@@ -522,9 +523,10 @@ function checkMovesAnyPiece(piece) {
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
                         gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        if(gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied"){
-                            collision = true
-                        }
+                    }
+                    if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        collision = true
                     }
                 }
                 //Southeast
@@ -534,9 +536,10 @@ function checkMovesAnyPiece(piece) {
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
                         gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        if(gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied"){
-                            collision = true
-                        }
+                    }
+                    if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        collision = true
                     }
                 }
                 //Southwest
@@ -546,9 +549,10 @@ function checkMovesAnyPiece(piece) {
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
                         gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        if(gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied"){
-                            collision = true
-                        }
+                    }
+                    if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        collision = true
                     }
                 }    
             break
@@ -560,10 +564,11 @@ function checkMovesAnyPiece(piece) {
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
                         gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        if(gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied"){
-                            collision = true
-                        }
-                    }  
+                    }
+                    if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        collision = true
+                    }
                 }
                 //South
                 collision = false
@@ -572,9 +577,10 @@ function checkMovesAnyPiece(piece) {
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
                         gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        if(gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied"){
-                            collision = true
-                        }
+                    }
+                    if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        collision = true
                     }
                 }
                 //East
@@ -584,9 +590,10 @@ function checkMovesAnyPiece(piece) {
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
                         gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        if(gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied"){
-                            collision = true
-                        }
+                    }
+                    if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        collision = true
                     }
                 }
                 //West
@@ -596,9 +603,10 @@ function checkMovesAnyPiece(piece) {
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
                         gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        if(gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied"){
-                            collision = true
-                        }
+                    }
+                    if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        collision = true
                     }
                 }
             break
@@ -610,9 +618,10 @@ function checkMovesAnyPiece(piece) {
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
                         gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        if(gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied"){
-                            collision = true
-                        }
+                    }
+                    if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        collision = true
                     }
                 }
                 //South
@@ -622,9 +631,10 @@ function checkMovesAnyPiece(piece) {
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
                         gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        if(gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied"){
-                            collision = true
-                        }
+                    }
+                    if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        collision = true
                     }
                 }
                 //East
@@ -634,9 +644,10 @@ function checkMovesAnyPiece(piece) {
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
                         gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        if(gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied"){
-                            collision = true
-                        }
+                    }
+                    if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        collision = true
                     }
                 }
                 //West
@@ -646,9 +657,10 @@ function checkMovesAnyPiece(piece) {
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
                         gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        if(gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied"){
-                            collision = true
-                        }
+                    }
+                    if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        collision = true
                     }
                 }
                 //Northwest
@@ -658,10 +670,11 @@ function checkMovesAnyPiece(piece) {
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
                         gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        if(gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied"){
-                            collision = true
-                        }
-                    } 
+                    }
+                    if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        collision = true
+                    }
                 }
                 //Northeast
                 collision = false
@@ -670,9 +683,10 @@ function checkMovesAnyPiece(piece) {
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
                         gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        if(gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied"){
-                            collision = true
-                        }
+                    }
+                    if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        collision = true
                     }
                 }
                 //Southeast
@@ -682,9 +696,10 @@ function checkMovesAnyPiece(piece) {
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
                         gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        if(gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied"){
-                            collision = true
-                        }
+                    }
+                    if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        collision = true
                     }
                 }
                 //Southwest
@@ -694,9 +709,10 @@ function checkMovesAnyPiece(piece) {
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
                         gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
-                        if(gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied"){
-                            collision = true
-                        }
+                    }
+                    if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
+                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        collision = true
                     }
                 }
             break
