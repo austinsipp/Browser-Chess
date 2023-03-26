@@ -476,7 +476,7 @@ function checkMovesAnyPiece(piece) {
                     gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
                 }
-                newCoords = [piece.currentCoord[0] - 1, piece.currentCoord[1] + 2]
+                newCoords = [piece.currentCoord[0] + 1, piece.currentCoord[1] - 2]
                 if(newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
                     gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
@@ -486,7 +486,7 @@ function checkMovesAnyPiece(piece) {
                     gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
                 }
-                newCoords = [piece.currentCoord[0] - 1, piece.currentCoord[1] - 2]
+                newCoords = [piece.currentCoord[0] - 1, piece.currentCoord[1] + 2]
                 if(newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
                     gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
