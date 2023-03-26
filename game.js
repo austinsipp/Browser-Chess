@@ -887,8 +887,8 @@ function displayValidMoves (piece, pieceObject ) {
     currentSelectedPiece = {piece,pieceObject, validMovesArray}
     console.log("validMovesArray:",validMovesArray)
     console.log(currentSelectedPiece)
+    document.querySelector(`#${piece.currentSpot}`).style.backgroundColor = "green"
     if(validMovesArray.length >= 1){
-        document.querySelector(`#${piece.currentSpot}`).style.backgroundColor = "green"
         validMovesArray.forEach((validMoveSquare) => {
             document.querySelector(`#${validMoveSquare}`).style.backgroundColor = "yellow"
         })
@@ -909,8 +909,12 @@ function onGamePieceSelect(event) {
                 displayValidMoves(piece,eventTarget)
             }
         })
-    }  
-    
+    }
+    else if(event.currentTarget.id === currentSelectedPiece.piece.pieceId) {
+        event.stopPropagation()
+        recolorBoard()
+        resetCurrentPiece()
+    } 
 }
 
 function onSquareClick (event) {
