@@ -393,9 +393,7 @@ function checkForCheck(gameState){
 return check  
 }
 
-function checkMovesAnyPiecePlusCastle (piece) {
 
-}
 
 
 
@@ -924,7 +922,42 @@ function checkForCheckmate (gameState) {
 }
 
 
-function movePiece(piece, pieceObject, endingSquare, castle = false) {
+function movePiece(piece, pieceObject, endingSquare) {
+    console.log(piece,endingSquare)
+    //castling special move rook piece too
+    if (piece.pieceType = 'king' && piece.moveCount === 0 && ['G1','C1','G8','C8'].find((element) => element === endingSquare.id) != -1) {
+        if (endingSquare.id === 'G1') {
+            let rook = gameData.boardPosition.white.find((searchPiece) => searchPiece.pieceId === 'kingsRookWhite')
+            let rookObject = document.querySelector('#kingsRookWhite')
+            let rookEndingSquare = document.querySelector('#F1')
+            movePiece(rook, rookObject, rookEndingSquare)
+            switchTurns(gameData.turn)//invoking move piece above causes the turn to switch, so we give an extra switch here to switch back for the king to move
+        }
+        if (endingSquare.id === 'C1') {
+            let rook = gameData.boardPosition.white.find((searchPiece) => searchPiece.pieceId === 'queensRookWhite')
+            let rookObject = document.querySelector('#queensRookWhite')
+            let rookEndingSquare = document.querySelector('#D1')
+            movePiece(rook, rookObject, rookEndingSquare)
+            switchTurns(gameData.turn)
+        }
+        if (endingSquare.id === 'G8') {
+            let rook = gameData.boardPosition.black.find((searchPiece) => searchPiece.pieceId === 'kingsRookBlack')
+            let rookObject = document.querySelector('#kingsRookBlack')
+            let rookEndingSquare = document.querySelector('#F8')
+            movePiece(rook, rookObject, rookEndingSquare)
+            switchTurns(gameData.turn)
+        }
+        if (endingSquare.id === 'C8') {
+            let rook = gameData.boardPosition.black.find((searchPiece) => searchPiece.pieceId === 'queensRookBlack')
+            let rookObject = document.querySelector('#queensRookBlack')
+            let rookEndingSquare = document.querySelector('#D8')
+            movePiece(rook, rookObject, rookEndingSquare)
+            switchTurns(gameData.turn)
+        }
+    }
+
+
+
     let oldSpot = squareNameToCoords(piece.currentSpot)
     gameData.squaresObject[oldSpot[0]-1][oldSpot[1]-1].occupied = 'unoccupied'
     piece.currentSpot = endingSquare.id
