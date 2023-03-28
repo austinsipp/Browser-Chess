@@ -393,9 +393,13 @@ function checkForCheck(gameState){
 return check  
 }
 
+function checkMovesAnyPiecePlusCastle (piece) {
+
+}
 
 
-function checkMovesAnyPiece(piece) {
+
+function checkMovesAnyPiece(piece, checkingCastle = false) {
     let validMovesArray = []
     let newCoords = []
     let collision = false
@@ -764,7 +768,54 @@ function checkMovesAnyPiece(piece) {
                 if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
                     gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
-                }    
+                }
+                //castling
+                if (piece.color === 'white' && piece.moveCount === 0 && checkingCastle === false) {
+                    let threatenedSquares = []
+                    gameData.boardPosition.black.forEach((blackPiece) => {
+                        let threatenedSquaresForPiece = checkMovesAnyPiece(blackPiece, true)
+                        threatenedSquares.push(...threatenedSquaresForPiece)
+                    })
+                    if (threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'E1') === -1 &&
+                        threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'F1') === -1 &&
+                        threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'G1') === -1 &&
+                        gameData.squaresObject[5][0].occupied === 'unoccupied' &&
+                        gameData.squaresObject[6][0].occupied === 'unoccupied'
+                        ) {
+                            validMovesArray.push('G1')
+                    }
+                    if (threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'E1') === -1 &&
+                        threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'D1') === -1 &&
+                        threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'C1') === -1 &&
+                        gameData.squaresObject[3][0].occupied === 'unoccupied' &&
+                        gameData.squaresObject[2][0].occupied === 'unoccupied'
+                        ) {
+                            validMovesArray.push('C1')
+                    }
+                }
+                if (piece.color === 'black' && piece.moveCount === 0 && checkingCastle === false) {
+                    let threatenedSquares = []
+                    gameData.boardPosition.white.forEach((whitePiece) => {
+                        let threatenedSquaresForPiece = checkMovesAnyPiece(whitePiece, true)
+                        threatenedSquares.push(...threatenedSquaresForPiece)
+                    })
+                    if (threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'E8') === -1 &&
+                        threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'F8') === -1 &&
+                        threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'G8') === -1 &&
+                        gameData.squaresObject[5][7].occupied === 'unoccupied' &&
+                        gameData.squaresObject[6][7].occupied === 'unoccupied'
+                        ) {
+                            validMovesArray.push('G8')
+                    }
+                    if (threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'E8') === -1 &&
+                        threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'D8') === -1 &&
+                        threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'C8') === -1 &&
+                        gameData.squaresObject[3][7].occupied === 'unoccupied' &&
+                        gameData.squaresObject[2][7].occupied === 'unoccupied'
+                        ) {
+                            validMovesArray.push('C8')
+                    }
+                }
             break
         }
     }
@@ -873,7 +924,7 @@ function checkForCheckmate (gameState) {
 }
 
 
-function movePiece(piece, pieceObject, endingSquare) {
+function movePiece(piece, pieceObject, endingSquare, castle = false) {
     let oldSpot = squareNameToCoords(piece.currentSpot)
     gameData.squaresObject[oldSpot[0]-1][oldSpot[1]-1].occupied = 'unoccupied'
     piece.currentSpot = endingSquare.id
