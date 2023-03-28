@@ -1,8 +1,11 @@
 let gameBoard = document.querySelector("#gameBoard")
-let whiteCaptured = document.querySelector("#whiteCaptured")
-let blackCaptured = document.querySelector("#blackCaptured")
+let whiteCaptured = document.querySelector("#whiteCaptured")//area for white captured pieces, need to refer to this to append the piece icons to it when they get captured
+let blackCaptured = document.querySelector("#blackCaptured")//area for black captured pieces
 
-
+//could make a piece class, but it was unnecessary, 
+//might eventually be a cleaner look, 
+//for now a piece is just an object with a few key value pairs, 
+//and the whitePieces is an array of those piece objects
 let whitePieces = [
     {
         icon: "./assets/whitePawn.png",
@@ -231,6 +234,8 @@ function squareIdMap (id) {
     return column + row
 }
 
+
+//finds the numerical coordinates, given a square name e.g. D6 is 4,6
 function squareNameToCoords (squareName) {
     let y = parseInt(squareName.substring(1,2))
     let xLetter = squareName.substring(0,1)
@@ -240,6 +245,8 @@ function squareNameToCoords (squareName) {
 }
 //console.log(squareNameToCoords ("A2"))
 
+
+//finds the square name, given the numerical coordinates e.g. [4,6] is D6
 function squareCoordsToName (squareCoords) {
     let row = squareCoords[1]
     let columnTransform = ["A","B","C","D","E","F","G","H"]
@@ -253,6 +260,11 @@ function squareCoordsToName (squareCoords) {
     return returnValue
 }
 
+
+//recolors the board , which is necessary every move, 
+//because to make a move you click a piece and the valid moves 
+//for that piece change the colors of the squares it can move to, 
+//need to change it back after the move is complete
 function recolorBoard() {
     for (let i=1; i<=8; i++) {
         for (let j=1; j<=8; j++) {
@@ -266,40 +278,10 @@ function recolorBoard() {
             } else if (i%2 != 0 && j%2 != 0){
                 square.style.backgroundColor = "white"
             }
-            /*if(typeof square.onclick == "function") {
-                square.removeEventListener('click', 'click', function squareEventListener(e)  {
-                    movePiece(piece, pieceObject, validMoveSquare, e)
-                    pieceObject.removeEventListener('click', function pieceEventListener() {
-                        displayValidMoves(piece, pieceObject)
-                    })
-                })
-             }*/
-            
         }
     }
 }
 
-for (let i=1; i<=8; i++) {
-    let row = document.createElement("div")
-    row.style.display = "flex"
-    for (let j=1; j<=8; j++) {
-        let square = document.createElement("div")
-        square.style.height = "5.625vw"
-        square.style.width = "5.625vw"
-        square.style.outlineColor = "black"
-        square.style.outlineStyle = "solid"
-        square.style.outlineWidth = "1px"
-        square.style.padding = "0"
-        square.style.margin = "0"
-        square.style.outlineOffset = "-1px"
-        square.style.textAlign = "center"
-        square.id = squareIdMap([i,j])
-        square.addEventListener('click', onSquareClick)
-        row.append(square)
-    }
-    gameBoard.append(row)
-}
-recolorBoard()
 
 
 
@@ -309,6 +291,24 @@ recolorBoard()
 
 
 
+//The squares object, which gets declared once the code actually starts, 
+//is an 8 element array of 8 element arrays. Each element of the array is an object 
+//which represents the square in question. It stores data like what piece is 
+//occupiying the square and what color, or whether it is occupied at all. 
+//This is necessary for searching for valid moves, 
+//because a piece can't go past another except knights which ignore this
+//This function only needs to run once, but you could run it more often. 
+//Originally I thought about having it run every single move in order to 
+//remap the squares object to which pieces were there, 
+//but I opted to handle the modification of the squares object in the movePiece function, 
+//rather than moving and then remapping. If this were to be done more theoretically, 
+//i.e. you keep the game data in the computer ether in some type of structured way, 
+//then you wanted to simply have it render every time someone made a move, 
+//this might be a function you add a lot to and have it re-render every move, but that was not how I set it up.
+//you could also run this more often in order to change the pieceOccupyingSquare, 
+//because that actually doesn't get changed later in the code, 
+//because there is no need to do so that I have found just yet. 
+//Would be cleaner to adjust that, though I found it unnecessary at this point
 function mapPiecesToSquaresObject() {
     allPieces.white.forEach((piece) => {
         squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].occupied = 'white'
@@ -323,7 +323,8 @@ function mapPiecesToSquaresObject() {
 
 
 
-
+//resets the board, currently doesn't have the recolorBoard() function 
+//called inside of it, but I might need to put it inside there at some point
 function resetBoard () {
     function resetPieces (piece) {
         let pieceObject = document.createElement("img")
@@ -367,6 +368,13 @@ function resetBoard () {
     mapPiecesToSquaresObject()
 }
 
+//some moves would normally be legal, but are not because they open your king up for check. 
+//This function takes a game state (either the current game state or a new game state after a move is made), 
+//and checks whether check is present. This is needed when validating potential moves, 
+//because you cannot move a piece if it will cause your king to be in check, 
+//so otherwise legal moves need to be removed from the validMovesArray
+//and it is also important for the victory condition, because not only do you need to have no valid moves, 
+//you need to also be in check to be in checkmate
 function checkForCheck(gameState){
     let currentTurn = gameState.turn
     let check = false
@@ -374,7 +382,7 @@ function checkForCheck(gameState){
         let kingSquare = gameState.boardPosition.white.find((piece) => piece.pieceId === 'kingWhite').currentSpot
         gameState.boardPosition.black.forEach((piece) => {
             //console.log(checkValidMovesForCheck(piece))
-            let validMovesArray = checkMovesAnyPiece(piece)
+            let validMovesArray = checkMovesAnyPiece(piece, gameState)
             if(validMovesArray.indexOf(kingSquare) != -1) {
                 check = true
             }
@@ -384,7 +392,7 @@ function checkForCheck(gameState){
         let kingSquare = gameState.boardPosition.black.find((piece) => piece.pieceId === 'kingBlack').currentSpot
         gameState.boardPosition.white.forEach((piece) => {
             //console.log(checkValidMovesForCheck(piece))
-            let validMovesArray = checkMovesAnyPiece(piece)
+            let validMovesArray = checkMovesAnyPiece(piece, gameState)
             if(validMovesArray.indexOf(kingSquare) != -1) {
                 check = true
             }
@@ -396,8 +404,9 @@ return check
 
 
 
-
-function checkMovesAnyPiece(piece, checkingCastle = false) {
+//this function just checks the valid moves for a piece with respect to the mvoes allowed by that piece type only, 
+//not whether it is a legal move for sure, i.e. it doesn't check whether it opens the player moving up for check
+function checkMovesAnyPiece(piece, gameState = gameData, checkingCastle = false) {
     let validMovesArray = []
     let newCoords = []
     let collision = false
@@ -409,24 +418,24 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
                 if (piece.color === "white") {
                     newCoords = [piece.currentCoord[0] - 1, piece.currentCoord[1] + 1]
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied === "black") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied === "black") {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                     newCoords = [piece.currentCoord[0] + 1, piece.currentCoord[1] + 1]
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied === "black") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied === "black") {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                 }
                 if (piece.color === "black") {
                     newCoords = [piece.currentCoord[0] - 1, piece.currentCoord[1] - 1]
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied === "white") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied === "white") {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                     newCoords = [piece.currentCoord[0] + 1, piece.currentCoord[1] - 1]
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied === "white") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied === "white") {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                 }
@@ -441,10 +450,10 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
                             newCoords = [piece.currentCoord[0], piece.currentCoord[1] - squaresMoved]
                         }
                         if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                            gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied === "unoccupied") {
+                            gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied === "unoccupied") {
                             validMovesArray.push(squareCoordsToName(newCoords))
                         }
-                        if(gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied"){
+                        if(gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied"){
                             collision = true
                         }
                     }
@@ -457,7 +466,7 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
                         newCoords = [piece.currentCoord[0], piece.currentCoord[1] - 1]
                     }
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied === "unoccupied") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied === "unoccupied") {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                 }
@@ -465,42 +474,42 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
             case ("knight"):
                 newCoords = [piece.currentCoord[0] + 2, piece.currentCoord[1] + 1]
                 if(newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                    gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                    gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
                 }
                 newCoords = [piece.currentCoord[0] + 1, piece.currentCoord[1] + 2]
                 if(newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                    gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                    gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
                 }
                 newCoords = [piece.currentCoord[0] + 2, piece.currentCoord[1] - 1]
                 if(newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                    gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                    gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
                 }
                 newCoords = [piece.currentCoord[0] + 1, piece.currentCoord[1] - 2]
                 if(newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                    gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                    gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
                 }
                 newCoords = [piece.currentCoord[0] - 2, piece.currentCoord[1] + 1]
                 if(newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                    gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                    gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
                 }
                 newCoords = [piece.currentCoord[0] - 1, piece.currentCoord[1] + 2]
                 if(newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                    gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                    gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
                 }
                 newCoords = [piece.currentCoord[0] - 2, piece.currentCoord[1] - 1]
                 if(newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                    gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                    gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
                 }
                 newCoords = [piece.currentCoord[0] - 1, piece.currentCoord[1] - 2]
                 if(newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                    gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                    gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
                 }
             break
@@ -510,11 +519,11 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
                 for (let squaresMoved=1; squaresMoved<=8; squaresMoved++) {
                     newCoords = [piece.currentCoord[0] - squaresMoved, piece.currentCoord[1] + squaresMoved]
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
                         collision = true
                     } 
                 }
@@ -523,11 +532,11 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
                 for (let squaresMoved=1; squaresMoved<=8; squaresMoved++) {
                     newCoords = [piece.currentCoord[0] + squaresMoved, piece.currentCoord[1] + squaresMoved]
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
                         collision = true
                     }
                 }
@@ -536,11 +545,11 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
                 for (let squaresMoved=1; squaresMoved<=8; squaresMoved++) {
                     newCoords = [piece.currentCoord[0] + squaresMoved, piece.currentCoord[1] - squaresMoved]
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
                         collision = true
                     }
                 }
@@ -549,11 +558,11 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
                 for (let squaresMoved=1; squaresMoved<=8; squaresMoved++) {
                     newCoords = [piece.currentCoord[0] - squaresMoved, piece.currentCoord[1] - squaresMoved]
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
                         collision = true
                     }
                 }    
@@ -564,11 +573,11 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
                 for (let squaresMoved=1; squaresMoved<=8; squaresMoved++) {
                     newCoords = [piece.currentCoord[0], piece.currentCoord[1] + squaresMoved]
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
                         collision = true
                     }
                 }
@@ -577,11 +586,11 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
                 for (let squaresMoved=1; squaresMoved<=8; squaresMoved++) {
                     newCoords = [piece.currentCoord[0], piece.currentCoord[1] - squaresMoved]
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
                         collision = true
                     }
                 }
@@ -590,11 +599,11 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
                 for (let squaresMoved=1; squaresMoved<=8; squaresMoved++) {
                     newCoords = [piece.currentCoord[0] + squaresMoved, piece.currentCoord[1]]
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
                         collision = true
                     }
                 }
@@ -603,11 +612,11 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
                 for (let squaresMoved=1; squaresMoved<=8; squaresMoved++) {
                     newCoords = [piece.currentCoord[0] - squaresMoved, piece.currentCoord[1]]
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
                         collision = true
                     }
                 }
@@ -618,11 +627,11 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
                 for (let squaresMoved=1; squaresMoved<=8; squaresMoved++) {
                     newCoords = [piece.currentCoord[0], piece.currentCoord[1] + squaresMoved]
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
                         collision = true
                     }
                 }
@@ -631,11 +640,11 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
                 for (let squaresMoved=1; squaresMoved<=8; squaresMoved++) {
                     newCoords = [piece.currentCoord[0], piece.currentCoord[1] - squaresMoved]
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
                         collision = true
                     }
                 }
@@ -644,11 +653,11 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
                 for (let squaresMoved=1; squaresMoved<=8; squaresMoved++) {
                     newCoords = [piece.currentCoord[0] + squaresMoved, piece.currentCoord[1]]
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
                         collision = true
                     }
                 }
@@ -657,11 +666,11 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
                 for (let squaresMoved=1; squaresMoved<=8; squaresMoved++) {
                     newCoords = [piece.currentCoord[0] - squaresMoved, piece.currentCoord[1]]
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
                         collision = true
                     }
                 }
@@ -670,11 +679,11 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
                 for (let squaresMoved=1; squaresMoved<=8; squaresMoved++) {
                     newCoords = [piece.currentCoord[0] - squaresMoved, piece.currentCoord[1] + squaresMoved]
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
                         collision = true
                     }
                 }
@@ -683,11 +692,11 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
                 for (let squaresMoved=1; squaresMoved<=8; squaresMoved++) {
                     newCoords = [piece.currentCoord[0] + squaresMoved, piece.currentCoord[1] + squaresMoved]
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
                         collision = true
                     }
                 }
@@ -696,11 +705,11 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
                 for (let squaresMoved=1; squaresMoved<=8; squaresMoved++) {
                     newCoords = [piece.currentCoord[0] + squaresMoved, piece.currentCoord[1] - squaresMoved]
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
                         collision = true
                     }
                 }
@@ -709,11 +718,11 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
                 for (let squaresMoved=1; squaresMoved<=8; squaresMoved++) {
                     newCoords = [piece.currentCoord[0] - squaresMoved, piece.currentCoord[1] - squaresMoved]
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                         validMovesArray.push(squareCoordsToName(newCoords))
                     }
                     if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 &&
-                        gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
+                        gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != "unoccupied") {
                         collision = true
                     }
                 }
@@ -722,94 +731,94 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
                 //Northwest
                 newCoords = [piece.currentCoord[0] - 1, piece.currentCoord[1] + 1]
                 if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                    gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                    gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
                 }
                 //North
                 newCoords = [piece.currentCoord[0], piece.currentCoord[1] + 1]
                 if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                    gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                    gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
                 }
                 //Northeast
                 newCoords = [piece.currentCoord[0] + 1, piece.currentCoord[1] + 1]
                 if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                    gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                    gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
                 }
                 //East
                 newCoords = [piece.currentCoord[0] + 1, piece.currentCoord[1]]
                 if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                    gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                    gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
                 }
                 //Southeast
                 newCoords = [piece.currentCoord[0] + 1, piece.currentCoord[1] - 1]
                 if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                    gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                    gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
                 }
                 //South
                 newCoords = [piece.currentCoord[0], piece.currentCoord[1] - 1]
                 if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                    gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                    gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
                 }
                 //Southwest
                 newCoords = [piece.currentCoord[0] - 1, piece.currentCoord[1] - 1]
                 if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                    gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                    gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
                 }
                 //West
                 newCoords = [piece.currentCoord[0] - 1, piece.currentCoord[1]]
                 if (newCoords[0] >= 1 && newCoords[0] <=8 && newCoords[1] >= 1 && newCoords[1] <=8 && collision === false &&
-                    gameData.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
+                    gameState.squaresObject[newCoords[0]-1][newCoords[1]-1].occupied != piece.color) {
                     validMovesArray.push(squareCoordsToName(newCoords))
                 }
                 //castling
                 if (piece.color === 'white' && piece.moveCount === 0 && checkingCastle === false) {
                     let threatenedSquares = []
-                    gameData.boardPosition.black.forEach((blackPiece) => {
-                        let threatenedSquaresForPiece = checkMovesAnyPiece(blackPiece, true)
+                    gameState.boardPosition.black.forEach((blackPiece) => {
+                        let threatenedSquaresForPiece = checkMovesAnyPiece(blackPiece, gameState, true)
                         threatenedSquares.push(...threatenedSquaresForPiece)
                     })
                     if (threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'E1') === -1 &&
                         threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'F1') === -1 &&
                         threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'G1') === -1 &&
-                        gameData.squaresObject[5][0].occupied === 'unoccupied' &&
-                        gameData.squaresObject[6][0].occupied === 'unoccupied'
+                        gameState.squaresObject[5][0].occupied === 'unoccupied' &&
+                        gameState.squaresObject[6][0].occupied === 'unoccupied'
                         ) {
                             validMovesArray.push('G1')
                     }
                     if (threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'E1') === -1 &&
                         threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'D1') === -1 &&
                         threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'C1') === -1 &&
-                        gameData.squaresObject[3][0].occupied === 'unoccupied' &&
-                        gameData.squaresObject[2][0].occupied === 'unoccupied'
+                        gameState.squaresObject[3][0].occupied === 'unoccupied' &&
+                        gameState.squaresObject[2][0].occupied === 'unoccupied'
                         ) {
                             validMovesArray.push('C1')
                     }
                 }
                 if (piece.color === 'black' && piece.moveCount === 0 && checkingCastle === false) {
                     let threatenedSquares = []
-                    gameData.boardPosition.white.forEach((whitePiece) => {
-                        let threatenedSquaresForPiece = checkMovesAnyPiece(whitePiece, true)
+                    gameState.boardPosition.white.forEach((whitePiece) => {
+                        let threatenedSquaresForPiece = checkMovesAnyPiece(whitePiece, gameState, true)
                         threatenedSquares.push(...threatenedSquaresForPiece)
                     })
                     if (threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'E8') === -1 &&
                         threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'F8') === -1 &&
                         threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'G8') === -1 &&
-                        gameData.squaresObject[5][7].occupied === 'unoccupied' &&
-                        gameData.squaresObject[6][7].occupied === 'unoccupied'
+                        gameState.squaresObject[5][7].occupied === 'unoccupied' &&
+                        gameState.squaresObject[6][7].occupied === 'unoccupied'
                         ) {
                             validMovesArray.push('G8')
                     }
                     if (threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'E8') === -1 &&
                         threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'D8') === -1 &&
                         threatenedSquares.indexOf((threatenedSquare) => threatenedSquare === 'C8') === -1 &&
-                        gameData.squaresObject[3][7].occupied === 'unoccupied' &&
-                        gameData.squaresObject[2][7].occupied === 'unoccupied'
+                        gameState.squaresObject[3][7].occupied === 'unoccupied' &&
+                        gameState.squaresObject[2][7].occupied === 'unoccupied'
                         ) {
                             validMovesArray.push('C8')
                     }
@@ -822,7 +831,17 @@ function checkMovesAnyPiece(piece, checkingCastle = false) {
     return validMovesArray
 }
 
+
+//populates what the board would look like once a move is completed, 
+//then it checks that it doesn't cause check for the player making the move, 
+//because that would make it invalid, and it keeps it from being
+//returned to the previous function so as to not allow the move
 function checkValidMovesForCheck(piece) {
+    //this is the only way to make a hard copy of an object, 
+    //can't just say let newGameState = gameData because it will 
+    //refer to the actual gameData object and modify it, 
+    //when we only want to create a copy of it to look at the game status 
+    //after the move in question in order to check for legality
     let newGameState = JSON.parse(JSON.stringify(gameData))
     let validMovesArray = []
     let possibleValidMovesArray = []
@@ -832,6 +851,7 @@ function checkValidMovesForCheck(piece) {
         if (piece.color === "white") {
             let newPiece = newGameState.boardPosition.white.find((searchingPiece) => searchingPiece.pieceId === piece.pieceId)
             newPiece.currentSpot = squareCoordsToName(newCoords)
+            newGameState.squaresObject[newPiece.currentCoord[0]-1][newPiece.currentCoord[1]-1].occupied = 'unoccupied' //before setting the new coordinates, set the old square to unoccupied
             newPiece.currentCoord = newCoords
             newPiece.moveCount++
             newGameState.moveCounter++
@@ -853,6 +873,7 @@ function checkValidMovesForCheck(piece) {
         if (piece.color === "black") {
             let newPiece = newGameState.boardPosition.black.find((searchingPiece) => searchingPiece.pieceId === piece.pieceId)
             newPiece.currentSpot = squareCoordsToName(newCoords)
+            newGameState.squaresObject[newPiece.currentCoord[0]-1][newPiece.currentCoord[1]-1].occupied = 'unoccupied'
             newPiece.currentCoord = newCoords
             newPiece.moveCount++
             newGameState.moveCounter++
@@ -878,7 +899,8 @@ function checkValidMovesForCheck(piece) {
     return validMovesArray
 }
 
-
+//this calls the other functions in order to get the real valid moves for a piece, 
+//taking into account whether it causes your king to be in check
 function checkValidMoves(piece) {
     let validMovesArray = []
     if (gameData.turn === piece.color) {
@@ -887,6 +909,9 @@ function checkValidMoves(piece) {
     return validMovesArray
 }
 
+
+//simple function just switches the turn property of the gameData, 
+//might not have needed a whole function for it to be honest
 function switchTurns(currentMoverColor) {
     if (currentMoverColor === "white") {
         gameData.turn = "black"
@@ -898,6 +923,8 @@ function switchTurns(currentMoverColor) {
     console.log(gameData.turn,"to move")
 }
 
+
+//This is checking whether checkmate is present. The player whose turn it is must have no valid moves, and also be in check
 function checkForCheckmate (gameState) {
     let validMoveCount = 0
     let victor = ''
@@ -922,6 +949,12 @@ function checkForCheckmate (gameState) {
 }
 
 
+
+//does everything required to move a piece, incrementing move count in the game state, 
+//and for the piece in question, modifying the squares object to have the right squares 
+//occupied by the right color. Moving a captured piece to the captured piece area, 
+//recoloring the squares to remove the coloring of the valid move squares after the move is complete,
+//r3esetting which piece is the currently selected piece, and finally, checking for checkmate
 function movePiece(piece, pieceObject, endingSquare) {
     console.log(piece,endingSquare)
     //castling special move rook piece too
@@ -1001,6 +1034,9 @@ function movePiece(piece, pieceObject, endingSquare) {
     //return "moveComplete"
 }
 
+
+//this gets the fully valid moves and does the square coloration 
+//to make it apparent to the user which squares the selected piece can move to
 function displayValidMoves (piece, pieceObject ) {
     let validMovesArray = checkValidMoves(piece)
     currentSelectedPiece = {piece,pieceObject, validMovesArray}
@@ -1012,9 +1048,22 @@ function displayValidMoves (piece, pieceObject ) {
     }
 }
 
-
+//does what needs to happen when a piece is clicked on. 
+//This function is the function of an event listener that gets added to all the piece objects
 function onGamePieceSelect(event) {
     if(currentSelectedPiece.piece === null) {
+        //piece objects always exist in divs representing the squares, 
+        //if there is not a piece already selected, 
+        //we don't want the click to propagate up to the div representing the square, 
+        //because then it would trigger the square click event.
+        //If a piece is already selected, we want the event to propagate up 
+        //to the div square, so that the square click is triggered. 
+        //This comes up when capturing. If we didn't let it propagate up to 
+        //the square div when a piece about to be captured is clicked, 
+        //then we couldn't capture any pieces, since you would try to click on a square 
+        //to capture a piece, but the click only registers as a click on the piece, 
+        //never the square, so the square click never happens and the intended move never happens, 
+        //as movePiece only happens on the square click 
         event.stopPropagation()
         recolorBoard()
         let eventTarget = event.currentTarget
@@ -1028,12 +1077,19 @@ function onGamePieceSelect(event) {
         })
     }
     else if(event.currentTarget.id === currentSelectedPiece.piece.pieceId) {
+        //if you click on a piece that is already the selected piece, it unselects
         event.stopPropagation()
         recolorBoard()
         resetCurrentPiece()
     } 
 }
 
+
+//tells what happens when you click a square. 
+//I.e. nothing happens unless a piece is currently selected. 
+//But if a piece is selected, then it checks whether the square 
+//clicked on is a valid move for that piece and if it is, 
+//then it executes the movePiece function to that square
 function onSquareClick (event) {
     let square = event.currentTarget
     let {piece,pieceObject,validMovesArray} = currentSelectedPiece || {}
@@ -1048,7 +1104,7 @@ function onSquareClick (event) {
 
 
 
-
+//loops through all the pieces and adds the click event listener to the html element that is that piece's icon
 function populateValidMoves (gameData) {
     let pieces = [...gameData.boardPosition.white,...gameData.boardPosition.black]
     pieces.forEach((piece) => {
@@ -1064,37 +1120,69 @@ function populateValidMoves (gameData) {
 
 
 
+
+
+
+
+
+
+
+
+
+//CODE EXECUTION BEGINS HERE
+
+
+
+//creates divs for the squares on the board
+for (let i=1; i<=8; i++) {
+    let row = document.createElement("div")
+    row.style.display = "flex"
+    for (let j=1; j<=8; j++) {
+        let square = document.createElement("div")
+        square.style.height = "5.625vw"
+        square.style.width = "5.625vw"
+        square.style.outlineColor = "black"//needs to be an outline so as to not add to the thickness of the gameboard element these sit in
+        square.style.outlineStyle = "solid"
+        square.style.outlineWidth = "1px"
+        square.style.padding = "0"
+        square.style.margin = "0"
+        square.style.outlineOffset = "-1px"
+        square.style.textAlign = "center"
+        square.id = squareIdMap([i,j])
+        square.addEventListener('click', onSquareClick)
+        row.append(square)
+    }
+    gameBoard.append(row)
+}
+recolorBoard()
+
+
+
+//squares object gets actually populated in the resetBoard -> mapPiecesToSquaresObject function, just gets declared here as an empty array
 let squaresObject = []
+
+//don't think this gets used
 let allPieces = {white: whitePieces, black: blackPieces}
+
+//initialize this as no piece currently selected
 let currentSelectedPiece = {piece:null, pieceObject:null, validMovesArray:[]}
 
+
+//reset the board to initially set up the game
 resetBoard()
 
+
+//store all the game data in an object. Once I build this functionality, 
+//you could theoretically save your game by saving this object either locally or remotely. 
+//Still need to build a way to load a game given this object, 
+//but this object stores all of the data necessary to do that. 
+//Also eventually want to list out the move notation and make that prinatable, probably will store that in this object as well
 let gameData = {turn: "white", moveCounter: 0, boardPosition: allPieces, squaresObject: squaresObject}
 
 
 
-console.log(checkForCheck(gameData))
+
+//adds the event listeners to the pieces which is all that is now required to make the game go
 populateValidMoves(gameData)
-//console.log(squaresObject)
-//console.log(whitePieces)
-
-//console.log(whitePieces[2])
-//console.log(checkValidMoves(whitePieces[2]))
-/*function playGame() {
-    for (let i = 0; i<=10; i++) {
-        if (gameData.moveCounter === i) {
-             populateValidMoves(gameData)
-        }
-    }
-}*/
-/*
-function playGame() {
-    while (true) {
-        populateValidMoves
-    }
-}*/
-
-//playGame()
 
 
