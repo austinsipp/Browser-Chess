@@ -925,7 +925,7 @@ function checkForCheckmate (gameState) {
 function movePiece(piece, pieceObject, endingSquare) {
     console.log(piece,endingSquare)
     //castling special move rook piece too
-    if (piece.pieceType = 'king' && piece.moveCount === 0 && ['G1','C1','G8','C8'].find((element) => element === endingSquare.id) != -1) {
+    if (piece.pieceType === 'king' && piece.moveCount === 0 && ['G1','C1','G8','C8'].find((element) => element === endingSquare.id) != -1) {
         if (endingSquare.id === 'G1') {
             let rook = gameData.boardPosition.white.find((searchPiece) => searchPiece.pieceId === 'kingsRookWhite')
             let rookObject = document.querySelector('#kingsRookWhite')
