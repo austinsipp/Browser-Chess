@@ -94,14 +94,32 @@ function recolorBoard() {
 //because that actually doesn't get changed later in the code, 
 //because there is no need to do so that I have found just yet. 
 //Would be cleaner to adjust that, though I found it unnecessary at this point
-function mapPiecesToSquaresObject() {
+function mapPiecesToSquaresObject(gameData) {
+    gameData.squaresObject = []
+    for (let column=1; column<=8; column++) {
+        gameData.squaresObject.push([])
+        for (let row=1; row<=8; row++) {
+            /*squaresObject[column-1].push([])
+            squaresObject[column-1][row-1].push(
+                {
+                    squareName: squareCoordsToName([column,row]),
+                    squareCoords: [column,row],
+                    occupied: "unoccupied"
+                })*/
+                gameData.squaresObject[column-1].push({
+                squareName: squareCoordsToName([column,row]),
+                squareCoords: [column,row],
+                occupied: "unoccupied"
+            })
+        }
+    }
     allPieces.white.forEach((piece) => {
-        squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].occupied = 'white'
-        squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].pieceOccupyingSquare = piece.pieceId
+        gameData.squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].occupied = 'white'
+        gameData.squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].pieceOccupyingSquare = piece.pieceId
     })
     allPieces.black.forEach((piece) => {
-        squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].occupied = 'black'
-        squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].pieceOccupyingSquare = piece.pieceId
+        gameData.squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].occupied = 'black'
+        gameData.squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].pieceOccupyingSquare = piece.pieceId
     })
     //console.log(squaresObject)
 }
@@ -350,25 +368,10 @@ function resetBoard (gameData) {
         resetPieces(piece)
         piece.color = "black"
         })
-    for (let column=1; column<=8; column++) {
-        squaresObject.push([])
-        for (let row=1; row<=8; row++) {
-            /*squaresObject[column-1].push([])
-            squaresObject[column-1][row-1].push(
-                {
-                    squareName: squareCoordsToName([column,row]),
-                    squareCoords: [column,row],
-                    occupied: "unoccupied"
-                })*/
-            squaresObject[column-1].push({
-                squareName: squareCoordsToName([column,row]),
-                squareCoords: [column,row],
-                occupied: "unoccupied"
-            })
-        }
-    }
-    mapPiecesToSquaresObject()
+    
+    mapPiecesToSquaresObject(gameData)
     recolorBoard()
+    gameData.turn= 'white'
     //adds the event listeners to the pieces which is all that is now required to make the game go
     populateValidMoves(gameData)
 }
