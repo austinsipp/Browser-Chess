@@ -1,6 +1,7 @@
 let gameBoard = document.querySelector("#gameBoard")
 let whiteCaptured = document.querySelector("#whiteCaptured")//area for white captured pieces, need to refer to this to append the piece icons to it when they get captured
 let blackCaptured = document.querySelector("#blackCaptured")//area for black captured pieces
+let gameStatusDiv = document.querySelector('#gameStatus')
 
 
 
@@ -371,7 +372,8 @@ function resetBoard (gameData) {
     recolorBoard()
     gameData.turn= 'white'
     let status = `${gameData.turn} to move`
-    document.querySelector('#gameStatus').innerHTML = status.charAt(0).toUpperCase() + status.slice(1)
+    console.log(gameStatusDiv)
+    gameStatusDiv.innerHTML = status.charAt(0).toUpperCase() + status.slice(1)
     //adds the event listeners to the pieces which is all that is now required to make the game go
     populateValidMoves(gameData)
 }
@@ -931,7 +933,7 @@ function switchTurns(currentMoverColor) {
 
     console.log(gameData.turn,"to move")
     let status = `${gameData.turn} to move`
-    document.querySelector('#gameStatus').innerHTML = status.charAt(0).toUpperCase() + status.slice(1)
+    gameStatusDiv.innerHTML = status.charAt(0).toUpperCase() + status.slice(1)
 }
 
 
