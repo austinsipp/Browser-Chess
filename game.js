@@ -2,222 +2,7 @@ let gameBoard = document.querySelector("#gameBoard")
 let whiteCaptured = document.querySelector("#whiteCaptured")//area for white captured pieces, need to refer to this to append the piece icons to it when they get captured
 let blackCaptured = document.querySelector("#blackCaptured")//area for black captured pieces
 
-//could make a piece class, but it was unnecessary, 
-//might eventually be a cleaner look, 
-//for now a piece is just an object with a few key value pairs, 
-//and the whitePieces is an array of those piece objects
-let whitePieces = [
-    {
-        icon: "./assets/whitePawn.png",
-        initialSpot:"A2",
-        pieceType: "pawn",
-        pieceId: "queensRookPawnWhite"
-    },
-    {
-        icon: "./assets/whitePawn.png",
-        initialSpot:"B2",
-        pieceType: "pawn",
-        pieceId: "queensKnightPawnWhite"
-    },
-    {
-        icon: "./assets/whitePawn.png",
-        initialSpot:"C2",
-        pieceType: "pawn",
-        pieceId: "queensBishopPawnWhite"
-    },
-    {
-        icon: "./assets/whitePawn.png",
-        initialSpot:"D2",
-        pieceType: "pawn",
-        pieceId: "queensPawnWhite"
-    },
-    {
-        icon: "./assets/whitePawn.png",
-        initialSpot:"E2",
-        pieceType: "pawn",
-        pieceId: "kingsPawnWhite"
-    },
-    {
-        icon: "./assets/whitePawn.png",
-        initialSpot:"F2",
-        pieceType: "pawn",
-        pieceId: "kingsBishopPawnWhite"
-    },
-    {
-        icon: "./assets/whitePawn.png",
-        initialSpot:"G2",
-        pieceType: "pawn",
-        pieceId: "kingsKnightPawnWhite"
-    },
-    {
-        icon: "./assets/whitePawn.png",
-        initialSpot:"H2",
-        pieceType: "pawn",
-        pieceId: "kingsRookPawnWhite"
-    },
-    {
-        icon: "./assets/whiteRook.png",
-        initialSpot:"A1",
-        pieceType: "rook",
-        pieceId: "queensRookWhite"
-    }
-    ,
-    {
-        icon: "./assets/whiteKnight.png",
-        initialSpot:"B1",
-        pieceType: "knight",
-        pieceId: "queensKnightWhite"
-    }
-    ,
-    {
-        icon: "./assets/whiteBishop.png",
-        initialSpot:"C1",
-        pieceType: "bishop",
-        pieceId: "queensBishopWhite"
-    }
-    ,
-    {
-        icon: "./assets/whiteQueen.png",
-        initialSpot:"D1",
-        pieceType: "queen",
-        pieceId: "queenWhite"
-    }
-    ,
-    {
-        icon: "./assets/whiteKing.png",
-        initialSpot:"E1",
-        pieceType: "king",
-        pieceId: "kingWhite"
-    }
-    ,
-    {
-        icon: "./assets/whiteBishop.png",
-        initialSpot:"F1",
-        pieceType: "bishop",
-        pieceId: "kingsBishopWhite"
-    }
-    ,
-    {
-        icon: "./assets/whiteKnight.png",
-        initialSpot:"G1",
-        pieceType: "knight",
-        pieceId: "kingsKnightWhite"
-    }
-    ,
-    {
-        icon: "./assets/whiteRook.png",
-        initialSpot:"H1",
-        pieceType: "rook",
-        pieceId: "kingsRookWhite"
-    }
-]
 
-
-let blackPieces = [
-    {
-        icon: "./assets/blackPawn.png",
-        initialSpot:"A7",
-        pieceType: "pawn",
-        pieceId: "queensRookPawnBlack"
-    },
-    {
-        icon: "./assets/blackPawn.png",
-        initialSpot:"B7",
-        pieceType: "pawn",
-        pieceId: "queensKnightPawnBlack"
-    },
-    {
-        icon: "./assets/blackPawn.png",
-        initialSpot:"C7",
-        pieceType: "pawn",
-        pieceId: "queensBishopPawnBlack"
-    },
-    {
-        icon: "./assets/blackPawn.png",
-        initialSpot:"D7",
-        pieceType: "pawn",
-        pieceId: "queensPawnBlack"
-    },
-    {
-        icon: "./assets/blackPawn.png",
-        initialSpot:"E7",
-        pieceType: "pawn",
-        pieceId: "kingsPawnBlack"
-    },
-    {
-        icon: "./assets/blackPawn.png",
-        initialSpot:"F7",
-        pieceType: "pawn",
-        pieceId: "kingsBishopPawnBlack"
-    },
-    {
-        icon: "./assets/blackPawn.png",
-        initialSpot:"G7",
-        pieceType: "pawn",
-        pieceId: "kingsKnightPawnBlack"
-    },
-    {
-        icon: "./assets/blackPawn.png",
-        initialSpot:"H7",
-        pieceType: "pawn",
-        pieceId: "kingsRookPawnBlack"
-    },
-    {
-        icon: "./assets/blackRook.png",
-        initialSpot:"A8",
-        pieceType: "rook",
-        pieceId: "queensRookBlack"
-    }
-    ,
-    {
-        icon: "./assets/blackKnight.png",
-        initialSpot:"B8",
-        pieceType: "knight",
-        pieceId: "queensKnightBlack"
-    }
-    ,
-    {
-        icon: "./assets/blackBishop.png",
-        initialSpot:"C8",
-        pieceType: "bishop",
-        pieceId: "queensBishopBlack"
-    }
-    ,
-    {
-        icon: "./assets/blackQueen.png",
-        initialSpot:"D8",
-        pieceType: "queen",
-        pieceId: "queenBlack"
-    }
-    ,
-    {
-        icon: "./assets/blackKing.png",
-        initialSpot:"E8",
-        pieceType: "king",
-        pieceId: "kingBlack"
-    }
-    ,
-    {
-        icon: "./assets/blackBishop.png",
-        initialSpot:"F8",
-        pieceType: "bishop",
-        pieceId: "kingsBishopBlack"
-    }
-    ,
-    {
-        icon: "./assets/blackKnight.png",
-        initialSpot:"G8",
-        pieceType: "knight",
-        pieceId: "kingsKnightBlack"
-    }
-    ,
-    {
-        icon: "./assets/blackRook.png",
-        initialSpot:"H8",
-        pieceType: "rook",
-        pieceId: "kingsRookBlack"
-    }
-]
 
 
 
@@ -325,13 +110,229 @@ function mapPiecesToSquaresObject() {
 
 //resets the board, currently doesn't have the recolorBoard() function 
 //called inside of it, but I might need to put it inside there at some point
-function resetBoard () {
+function resetBoard (allPieces) {
+    function resetPieceArrays() {
+        allPieces.white = [
+            {
+                icon: "./assets/whitePawn.png",
+                initialSpot:"A2",
+                pieceType: "pawn",
+                pieceId: "queensRookPawnWhite"
+            },
+            {
+                icon: "./assets/whitePawn.png",
+                initialSpot:"B2",
+                pieceType: "pawn",
+                pieceId: "queensKnightPawnWhite"
+            },
+            {
+                icon: "./assets/whitePawn.png",
+                initialSpot:"C2",
+                pieceType: "pawn",
+                pieceId: "queensBishopPawnWhite"
+            },
+            {
+                icon: "./assets/whitePawn.png",
+                initialSpot:"D2",
+                pieceType: "pawn",
+                pieceId: "queensPawnWhite"
+            },
+            {
+                icon: "./assets/whitePawn.png",
+                initialSpot:"E2",
+                pieceType: "pawn",
+                pieceId: "kingsPawnWhite"
+            },
+            {
+                icon: "./assets/whitePawn.png",
+                initialSpot:"F2",
+                pieceType: "pawn",
+                pieceId: "kingsBishopPawnWhite"
+            },
+            {
+                icon: "./assets/whitePawn.png",
+                initialSpot:"G2",
+                pieceType: "pawn",
+                pieceId: "kingsKnightPawnWhite"
+            },
+            {
+                icon: "./assets/whitePawn.png",
+                initialSpot:"H2",
+                pieceType: "pawn",
+                pieceId: "kingsRookPawnWhite"
+            },
+            {
+                icon: "./assets/whiteRook.png",
+                initialSpot:"A1",
+                pieceType: "rook",
+                pieceId: "queensRookWhite"
+            }
+            ,
+            {
+                icon: "./assets/whiteKnight.png",
+                initialSpot:"B1",
+                pieceType: "knight",
+                pieceId: "queensKnightWhite"
+            }
+            ,
+            {
+                icon: "./assets/whiteBishop.png",
+                initialSpot:"C1",
+                pieceType: "bishop",
+                pieceId: "queensBishopWhite"
+            }
+            ,
+            {
+                icon: "./assets/whiteQueen.png",
+                initialSpot:"D1",
+                pieceType: "queen",
+                pieceId: "queenWhite"
+            }
+            ,
+            {
+                icon: "./assets/whiteKing.png",
+                initialSpot:"E1",
+                pieceType: "king",
+                pieceId: "kingWhite"
+            }
+            ,
+            {
+                icon: "./assets/whiteBishop.png",
+                initialSpot:"F1",
+                pieceType: "bishop",
+                pieceId: "kingsBishopWhite"
+            }
+            ,
+            {
+                icon: "./assets/whiteKnight.png",
+                initialSpot:"G1",
+                pieceType: "knight",
+                pieceId: "kingsKnightWhite"
+            }
+            ,
+            {
+                icon: "./assets/whiteRook.png",
+                initialSpot:"H1",
+                pieceType: "rook",
+                pieceId: "kingsRookWhite"
+            }
+        ]
+        allPieces.black = [
+            {
+                icon: "./assets/blackPawn.png",
+                initialSpot:"A7",
+                pieceType: "pawn",
+                pieceId: "queensRookPawnBlack"
+            },
+            {
+                icon: "./assets/blackPawn.png",
+                initialSpot:"B7",
+                pieceType: "pawn",
+                pieceId: "queensKnightPawnBlack"
+            },
+            {
+                icon: "./assets/blackPawn.png",
+                initialSpot:"C7",
+                pieceType: "pawn",
+                pieceId: "queensBishopPawnBlack"
+            },
+            {
+                icon: "./assets/blackPawn.png",
+                initialSpot:"D7",
+                pieceType: "pawn",
+                pieceId: "queensPawnBlack"
+            },
+            {
+                icon: "./assets/blackPawn.png",
+                initialSpot:"E7",
+                pieceType: "pawn",
+                pieceId: "kingsPawnBlack"
+            },
+            {
+                icon: "./assets/blackPawn.png",
+                initialSpot:"F7",
+                pieceType: "pawn",
+                pieceId: "kingsBishopPawnBlack"
+            },
+            {
+                icon: "./assets/blackPawn.png",
+                initialSpot:"G7",
+                pieceType: "pawn",
+                pieceId: "kingsKnightPawnBlack"
+            },
+            {
+                icon: "./assets/blackPawn.png",
+                initialSpot:"H7",
+                pieceType: "pawn",
+                pieceId: "kingsRookPawnBlack"
+            },
+            {
+                icon: "./assets/blackRook.png",
+                initialSpot:"A8",
+                pieceType: "rook",
+                pieceId: "queensRookBlack"
+            }
+            ,
+            {
+                icon: "./assets/blackKnight.png",
+                initialSpot:"B8",
+                pieceType: "knight",
+                pieceId: "queensKnightBlack"
+            }
+            ,
+            {
+                icon: "./assets/blackBishop.png",
+                initialSpot:"C8",
+                pieceType: "bishop",
+                pieceId: "queensBishopBlack"
+            }
+            ,
+            {
+                icon: "./assets/blackQueen.png",
+                initialSpot:"D8",
+                pieceType: "queen",
+                pieceId: "queenBlack"
+            }
+            ,
+            {
+                icon: "./assets/blackKing.png",
+                initialSpot:"E8",
+                pieceType: "king",
+                pieceId: "kingBlack"
+            }
+            ,
+            {
+                icon: "./assets/blackBishop.png",
+                initialSpot:"F8",
+                pieceType: "bishop",
+                pieceId: "kingsBishopBlack"
+            }
+            ,
+            {
+                icon: "./assets/blackKnight.png",
+                initialSpot:"G8",
+                pieceType: "knight",
+                pieceId: "kingsKnightBlack"
+            }
+            ,
+            {
+                icon: "./assets/blackRook.png",
+                initialSpot:"H8",
+                pieceType: "rook",
+                pieceId: "kingsRookBlack"
+            }
+        ]
+    }
+
     function resetPieces (piece) {
-        let pieceObject = document.createElement("img")
-        pieceObject.src = piece.icon
-        pieceObject.style.height = "5.625vw"
-        pieceObject.style.width = "5.625vw"
-        pieceObject.id = `${piece.pieceId}`
+        let pieceObject = document.querySelector(`#${piece.pieceId}`)
+        if (pieceObject === null) {
+            pieceObject = document.createElement("img")
+            pieceObject.src = piece.icon
+            pieceObject.style.height = "5.625vw"
+            pieceObject.style.width = "5.625vw"
+            pieceObject.id = `${piece.pieceId}`
+        }
         let location = document.querySelector(`#${piece.initialSpot}`)
         location.append(pieceObject)
         piece.currentSpot = piece.initialSpot
@@ -340,11 +341,12 @@ function resetBoard () {
         piece.captured = false
     }
 
-    whitePieces.forEach((piece) => {
+    resetPieceArrays()
+    allPieces.white.forEach((piece) => {
         resetPieces(piece)
         piece.color = "white"
         })
-    blackPieces.forEach((piece) => {
+        allPieces.black.forEach((piece) => {
         resetPieces(piece)
         piece.color = "black"
         })
@@ -956,7 +958,6 @@ function checkForCheckmate (gameState) {
 //recoloring the squares to remove the coloring of the valid move squares after the move is complete,
 //r3esetting which piece is the currently selected piece, and finally, checking for checkmate
 function movePiece(piece, pieceObject, endingSquare) {
-    console.log(piece,endingSquare)
     //castling special move rook piece too
     if (piece.pieceType === 'king' && piece.moveCount === 0 && ['G1','C1','G8','C8'].find((element) => element === endingSquare.id) != -1) {
         if (endingSquare.id === 'G1') {
@@ -1022,6 +1023,48 @@ function movePiece(piece, pieceObject, endingSquare) {
         //endingSquarePiece.remove()
     }
     endingSquare.append(pieceObject)
+    console.log(endingSquare.id,endingSquare.id.substring(1,1))
+    //check for pawn promotion
+    if(piece.pieceType === 'pawn' && (endingSquare.id.substring(1,2) === '8' || endingSquare.id.substring(1,2) === '1')) {
+        let pieceChangedTo = ''
+        while (['queen', 'bishop', 'knight', 'rook'].indexOf(pieceChangedTo) === -1 ) {
+            pieceChangedTo = prompt("You advanced a pawn all the way to the end! \nYou may promote it to whichever piece you like! \nWhat would you like? \nValid Values: queen, bishop, knight, rook", "queen")
+        }
+        piece.pieceType = pieceChangedTo
+        if(piece.color === 'white'){
+            switch (pieceChangedTo) {
+                case ("queen") :
+                    pieceObject.src = "./assets/whiteQueen.png"
+                break
+                case ("rook") :
+                    pieceObject.src = "./assets/whiteRook.png"
+                break
+                case ("bishop") :
+                    pieceObject.src = "./assets/whiteBishop.png"
+                break
+                case ("knight") :
+                    pieceObject.src = "./assets/whiteKnight.png"
+                break
+            }
+        }
+        if(piece.color === 'black'){
+            switch (pieceChangedTo) {
+                case ("queen") :
+                    pieceObject.src = "./assets/blackQueen.png"
+                break
+                case ("rook") :
+                    pieceObject.src = "./assets/blackRook.png"
+                break
+                case ("bishop") :
+                    pieceObject.src = "./assets/blackBishop.png"
+                break
+                case ("knight") :
+                    pieceObject.src = "./assets/blackKnight.png"
+                break
+            }
+        }
+        
+    }
 
     //console.log(`running switchTurns(${gameData.turn})`)
     gameData.squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].occupied = piece.color
@@ -1154,6 +1197,10 @@ for (let i=1; i<=8; i++) {
     }
     gameBoard.append(row)
 }
+
+let resetButton = document.querySelector('#resetButton').addEventListener('click', () => { resetBoard (allPieces)})
+
+
 recolorBoard()
 
 
@@ -1161,15 +1208,25 @@ recolorBoard()
 //squares object gets actually populated in the resetBoard -> mapPiecesToSquaresObject function, just gets declared here as an empty array
 let squaresObject = []
 
-//don't think this gets used
-let allPieces = {white: whitePieces, black: blackPieces}
+
+
 
 //initialize this as no piece currently selected
 let currentSelectedPiece = {piece:null, pieceObject:null, validMovesArray:[]}
 
 
+
+//could make a piece class, but it was unnecessary, 
+//might eventually be a cleaner look, 
+//for now a piece is just an object with a few key value pairs, 
+//and the whitePieces is an array of those piece objects
+//The key value pairs get set inside the resetPieceArrays function, which runs inside the resetBoard function
+let whitePieces = []
+let blackPieces = []
+let allPieces = {white: whitePieces, black: blackPieces}
+
 //reset the board to initially set up the game
-resetBoard()
+resetBoard(allPieces)
 
 
 //store all the game data in an object. Once I build this functionality, 
