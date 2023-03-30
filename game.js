@@ -89,11 +89,9 @@ function recolorBoard() {
 //rather than moving and then remapping. If this were to be done more theoretically, 
 //i.e. you keep the game data in the computer ether in some type of structured way, 
 //then you wanted to simply have it render every time someone made a move, 
-//this might be a function you add a lot to and have it re-render every move, but that was not how I set it up.
-//you could also run this more often in order to change the pieceOccupyingSquare, 
-//because that actually doesn't get changed later in the code, 
-//because there is no need to do so that I have found just yet. 
-//Would be cleaner to adjust that, though I found it unnecessary at this point
+//this might be a function you add a lot to and have it re-render every move, since this would allow 
+//re-calculating all the squares in the squaresObject and can run basically at any time,
+//but that was not how I set it up.
 function mapPiecesToSquaresObject(gameData) {
     gameData.squaresObject = []
     for (let column=1; column<=8; column++) {
@@ -1000,6 +998,7 @@ function movePiece(piece, pieceObject, endingSquare) {
 
     let oldSpot = squareNameToCoords(piece.currentSpot)
     gameData.squaresObject[oldSpot[0]-1][oldSpot[1]-1].occupied = 'unoccupied'
+    delete gameData.squaresObject[oldSpot[0]-1][oldSpot[1]-1].pieceOccupyingSquare
     piece.currentSpot = endingSquare.id
     piece.currentCoord = squareNameToCoords(endingSquare.id)
     piece.moveCount++
