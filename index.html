@@ -9,23 +9,30 @@
 </head>
 <body>
     <div id="header">
+        Chess, written in basic javascript! Have fun!
     </div>
     <div id="whiteCaptured">
     </div>
     <div id="gameRow">
         <div id="gameSettings">
-            gamesettings
+            <div id="gameStatus"></div>
         </div>
         <div id="gameBoard">
             
         </div>
         <div id="gameControls">
+            <div class="helvetica">Control buttons:</div>
             <button id="resetButton">Reset the game</button>
+            <button id="export">Export your game as-is</button>
+            <button id="localStorageSave">Save your progress to local storage and come back later</button>
+            <button id="loadGame">Load a game from a text file</button>
+            <button id="loadGame">Load a game from local storage</button>
         </div>
     </div>
     <div id="blackCaptured">
     </div>
-    <div id="footer">
+    <div id="footer" class="helvetica">
+        Written by: Austin Sipp
     </div>
     <script src="./game.js"></script>
 </body>

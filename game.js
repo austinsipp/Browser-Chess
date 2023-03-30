@@ -370,6 +370,8 @@ function resetBoard (gameData) {
     mapPiecesToSquaresObject(gameData)
     recolorBoard()
     gameData.turn= 'white'
+    let status = `${gameData.turn} to move`
+    document.querySelector('#gameStatus').innerHTML = status.charAt(0).toUpperCase() + status.slice(1)
     //adds the event listeners to the pieces which is all that is now required to make the game go
     populateValidMoves(gameData)
 }
@@ -928,6 +930,8 @@ function switchTurns(currentMoverColor) {
     }
 
     console.log(gameData.turn,"to move")
+    let status = `${gameData.turn} to move`
+    document.querySelector('#gameStatus').innerHTML = status.charAt(0).toUpperCase() + status.slice(1)
 }
 
 
@@ -952,6 +956,7 @@ function checkForCheckmate (gameState) {
     let check = checkForCheck(gameState)
     if(check === true && validMoveCount === 0) {
         console.log(`${victor} wins, congratulations!`)
+        document.querySelector('#gameSettings').innerHTML = `${victor} wins, congratulations!`
     }
 }
 

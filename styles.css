@@ -12,6 +12,8 @@
     margin:0px;
     padding:0px;
     text-align: center;
+    font-family: helvetica;
+    font-size: 2rem;
 }
 
 #footer {
@@ -67,15 +69,35 @@
     width:25vw;
     border-color:black;
     border-style: solid;
-    background: linear-gradient(to right,#00000070,#ffffff);
+    /*background: linear-gradient(to right,#00000070,#ffffff);*/
     margin:0px;
     padding:0px;
+    font-family: helvetica;
+    font-size: large;
+    font-weight: 800;
+    text-align: center;
+    display:flex;
+    flex-direction:column;
+    justify-content: space-evenly;
 }
+
 #gameControls {
     width:25vw;
     border-color:black;
     border-style: solid;
-    background: linear-gradient(to right,#ffffff,#00000070);
+    /*background: linear-gradient(to right,#ffffff,#00000070);*/
     margin:0px;
     padding:0px;
+    display:flex;
+    flex-direction:column;
+    justify-content: space-evenly;
+}
+
+button {
+    margin: 10%;
+    font-family: helvetica;
+}
+
+.helvetica {
+    font-family: helvetica;
 }
