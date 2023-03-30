@@ -936,14 +936,14 @@ function checkForCheckmate (gameState) {
     if(gameState.turn === "white") {
         gameState.boardPosition.white.forEach((piece) => {
             let validMovesArray = checkValidMoves(piece)
-            validMoveCount +- validMovesArray.length
+            validMoveCount += validMovesArray.length
             victor = "Black"
         })
     }
     if(gameState.turn === "black") {
         gameState.boardPosition.black.forEach((piece) => {
             let validMovesArray = checkValidMoves(piece)
-            validMoveCount +- validMovesArray.length
+            validMoveCount += validMovesArray.length
             victor = "White"
         })
     }
