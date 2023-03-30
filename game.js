@@ -110,9 +110,9 @@ function mapPiecesToSquaresObject() {
 
 //resets the board, currently doesn't have the recolorBoard() function 
 //called inside of it, but I might need to put it inside there at some point
-function resetBoard (allPieces) {
+function resetBoard (gameData) {
     function resetPieceArrays() {
-        allPieces.white = [
+        gameData.boardPosition.white = [
             {
                 icon: "./assets/whitePawn.png",
                 initialSpot:"A2",
@@ -217,7 +217,7 @@ function resetBoard (allPieces) {
                 pieceId: "kingsRookWhite"
             }
         ]
-        allPieces.black = [
+        gameData.boardPosition.black = [
             {
                 icon: "./assets/blackPawn.png",
                 initialSpot:"A7",
@@ -342,11 +342,11 @@ function resetBoard (allPieces) {
     }
 
     resetPieceArrays()
-    allPieces.white.forEach((piece) => {
+    gameData.boardPosition.white.forEach((piece) => {
         resetPieces(piece)
         piece.color = "white"
         })
-        allPieces.black.forEach((piece) => {
+    gameData.boardPosition.black.forEach((piece) => {
         resetPieces(piece)
         piece.color = "black"
         })
@@ -368,6 +368,9 @@ function resetBoard (allPieces) {
         }
     }
     mapPiecesToSquaresObject()
+    recolorBoard()
+    //adds the event listeners to the pieces which is all that is now required to make the game go
+    populateValidMoves(gameData)
 }
 
 //some moves would normally be legal, but are not because they open your king up for check. 
@@ -1198,10 +1201,10 @@ for (let i=1; i<=8; i++) {
     gameBoard.append(row)
 }
 
-let resetButton = document.querySelector('#resetButton').addEventListener('click', () => { resetBoard (allPieces)})
+let resetButton = document.querySelector('#resetButton').addEventListener('click', () => { resetBoard (gameData)})
 
 
-recolorBoard()
+//recolorBoard()
 
 
 
@@ -1225,8 +1228,7 @@ let whitePieces = []
 let blackPieces = []
 let allPieces = {white: whitePieces, black: blackPieces}
 
-//reset the board to initially set up the game
-resetBoard(allPieces)
+
 
 
 //store all the game data in an object. Once I build this functionality, 
@@ -1236,10 +1238,11 @@ resetBoard(allPieces)
 //Also eventually want to list out the move notation and make that prinatable, probably will store that in this object as well
 let gameData = {turn: "white", moveCounter: 0, boardPosition: allPieces, squaresObject: squaresObject}
 
-
+//reset the board to initially set up the game
+resetBoard(gameData)
 
 
 //adds the event listeners to the pieces which is all that is now required to make the game go
-populateValidMoves(gameData)
+//populateValidMoves(gameData)
 
 
