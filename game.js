@@ -843,16 +843,17 @@ function checkMovesAnyPiece(piece, gameState = gameData, checkingCastle = false)
 //because that would make it invalid, and it keeps it from being
 //returned to the previous function so as to not allow the move
 function checkValidMovesForCheck(piece) {
-    //this is the only way to make a hard copy of an object, 
-    //can't just say let newGameState = gameData because it will 
-    //refer to the actual gameData object and modify it, 
-    //when we only want to create a copy of it to look at the game status 
-    //after the move in question in order to check for legality
-    let newGameState = JSON.parse(JSON.stringify(gameData))
+    
     let validMovesArray = []
     let possibleValidMovesArray = []
     possibleValidMovesArray = checkMovesAnyPiece(piece)
     possibleValidMovesArray.forEach((possibleValidMove) => {
+        //this is the only way to make a hard copy of an object, 
+        //can't just say let newGameState = gameData because it will 
+        //refer to the actual gameData object and modify it, 
+        //when we only want to create a copy of it to look at the game status 
+        //after the move in question in order to check for legality
+        let newGameState = JSON.parse(JSON.stringify(gameData))
         let newCoords = squareNameToCoords(possibleValidMove)
         if (piece.color === "white") {
             let newPiece = newGameState.boardPosition.white.find((searchingPiece) => searchingPiece.pieceId === piece.pieceId)
