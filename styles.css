@@ -102,3 +102,11 @@ button {
     font-family: helvetica;
 }
 
+
+img {
+    /*filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(0deg);*/
+    /*mix-blend-mode: color-dodge;*/
+    /*background-color: #00FF00;*/
+    filter: hue-rotate(90deg)
+  }
+  
