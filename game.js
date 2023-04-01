@@ -412,9 +412,21 @@ return check
 }
 
 
+function saveToLocalStorage (gameState) {
+    let gameSaveName = prompt("Create a name for your saved game, to differentiate between other saved games you have:")
+    localStorage.setItem(gameSaveName,gameState)
+    alert(`Your game is saved under the name ${gameSaveName}, you will need that to retrieve it. You can now ex out of the window!`)
+}
+
+function loadFromLocalStorage () {
+    let gameSaveName = prompt("What is the name of the saved game you would like to retrieve?")
+    let gameSaveData = localStorage.getItem(gameSaveName)
+    console.log(gameSaveData)
+}
 
 
-//this function just checks the valid moves for a piece with respect to the mvoes allowed by that piece type only, 
+
+//this function just checks the valid moves for a piece with respect to the moves allowed by that piece type only, 
 //not whether it is a legal move for sure, i.e. it doesn't check whether it opens the player moving up for check
 function checkMovesAnyPiece(piece, gameState = gameData, checkingCastle = false) {
     let validMovesArray = []
@@ -958,7 +970,7 @@ function checkForCheckmate (gameState) {
     let check = checkForCheck(gameState)
     if(check === true && validMoveCount === 0) {
         console.log(`${victor} wins, congratulations!`)
-        document.querySelector('#gameSettings').innerHTML = `${victor} wins, congratulations!`
+        gameStatusDiv.innerHTML = `${victor} wins, congratulations!`
     }
 }
 
@@ -1212,6 +1224,8 @@ for (let i=1; i<=8; i++) {
 }
 
 let resetButton = document.querySelector('#resetButton').addEventListener('click', () => { resetBoard (gameData)})
+let localStorageSave = document.querySelector('#localStorageSave').addEventListener('click', () => { saveToLocalStorage (gameData)})
+let loadGameLocal = document.querySelector('#loadGameLocal').addEventListener('click', () => { loadFromLocalStorage ()})
 
 
 //recolorBoard()
