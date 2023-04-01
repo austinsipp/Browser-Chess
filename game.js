@@ -424,6 +424,45 @@ function loadFromLocalStorage () {
     loadGame(gameSaveData)
 }
 
+function saveToText (gameState) {
+    //alert(`Please save the following text somewhere on your computer, then you can load it by copypasting the text:\n\n${JSON.stringify(gameState)}`)
+    const link = document.createElement("a")
+    const content = JSON.stringify(gameState)
+    const file = new Blob([content], { type: 'text/plain' })
+    link.href = URL.createObjectURL(file)
+    link.download = "savedgame.txt"
+    link.click()
+    URL.revokeObjectURL(link.href)
+}
+
+function loadFromText () {
+    //let gameSaveData = prompt("Please paste your game data here:")
+    //loadGame(gameSaveData)
+    var input = document.createElement('input')
+    input.type = 'file'
+
+    input.onchange = e => { 
+        // getting a hold of the file reference
+        var file = e.target.files[0]; 
+
+        // setting up the reader
+        var reader = new FileReader();
+        reader.readAsText(file,'UTF-8');
+
+        // here we tell the reader what to do when it's done reading...
+        reader.onload = readerEvent => {
+            var content = readerEvent.target.result; // this is the content!
+            //console.log( content )
+            loadGame(content)
+        }
+
+        }
+
+    input.click();
+}
+
+
+
 function loadGame (gameState) {
     gameData = JSON.parse(gameState)
     mapPiecesToSquaresObject(gameData)
@@ -440,6 +479,10 @@ function loadGame (gameState) {
     gameData.boardPosition.black.forEach((piece) => {
         movePieces(piece)
         })
+    console.log(gameData.turn,"to move")
+    let status = `${gameData.turn} to move`
+    gameStatusDiv.innerHTML = status.charAt(0).toUpperCase() + status.slice(1)
+    checkForCheckmate(gameData)
 }
 
 
@@ -1244,6 +1287,8 @@ for (let i=1; i<=8; i++) {
 let resetButton = document.querySelector('#resetButton').addEventListener('click', () => { resetBoard (gameData)})
 let localStorageSave = document.querySelector('#localStorageSave').addEventListener('click', () => { saveToLocalStorage (gameData)})
 let loadGameLocal = document.querySelector('#loadGameLocal').addEventListener('click', () => { loadFromLocalStorage ()})
+let exportText = document.querySelector('#exportText').addEventListener('click', () => { saveToText (gameData)})
+let loadGameText = document.querySelector('#loadGameText').addEventListener('click', () => { loadFromText ()})
 
 
 //recolorBoard()
