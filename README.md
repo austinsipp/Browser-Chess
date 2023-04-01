@@ -27,7 +27,7 @@ For more experienced players, check out the rest of The Chess Website dot com, t
 
 
 Technologies used:
-This game is coded entirely in HTML/CSS/Javascript. As of 3/29/23, I have not used any 3rd party libraries, the code is entirely my own using base classes and functions in the languages mentioned above.
+This game is coded entirely in HTML/CSS/Javascript. As of 4/1/23, I have not used any 3rd party libraries, the code is entirely my own using base classes and functions in the languages mentioned above.
 
 
 
