@@ -112,11 +112,11 @@ function mapPiecesToSquaresObject(gameData) {
             })
         }
     }
-    allPieces.white.forEach((piece) => {
+    gameData.boardPosition.white.forEach((piece) => {
         gameData.squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].occupied = 'white'
         gameData.squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].pieceOccupyingSquare = piece.pieceId
     })
-    allPieces.black.forEach((piece) => {
+    gameData.boardPosition.black.forEach((piece) => {
         gameData.squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].occupied = 'black'
         gameData.squaresObject[piece.currentCoord[0]-1][piece.currentCoord[1]-1].pieceOccupyingSquare = piece.pieceId
     })
@@ -414,14 +414,32 @@ return check
 
 function saveToLocalStorage (gameState) {
     let gameSaveName = prompt("Create a name for your saved game, to differentiate between other saved games you have:")
-    localStorage.setItem(gameSaveName,gameState)
+    localStorage.setItem(gameSaveName,JSON.stringify(gameState))
     alert(`Your game is saved under the name ${gameSaveName}, you will need that to retrieve it. You can now ex out of the window!`)
 }
 
 function loadFromLocalStorage () {
     let gameSaveName = prompt("What is the name of the saved game you would like to retrieve?")
     let gameSaveData = localStorage.getItem(gameSaveName)
-    console.log(gameSaveData)
+    loadGame(gameSaveData)
+}
+
+function loadGame (gameState) {
+    gameData = JSON.parse(gameState)
+    mapPiecesToSquaresObject(gameData)
+
+    function movePieces (piece) {
+        let pieceObject = document.querySelector(`#${piece.pieceId}`)
+        let location = document.querySelector(`#${piece.currentSpot}`)
+        location.append(pieceObject)
+    }
+    //console.log(gameData.boardPosition.white[])
+    gameData.boardPosition.white.forEach((piece) => {
+        movePieces(piece)
+        })
+    gameData.boardPosition.black.forEach((piece) => {
+        movePieces(piece)
+        })
 }
 
 
